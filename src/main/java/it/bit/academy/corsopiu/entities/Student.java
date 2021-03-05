@@ -14,7 +14,8 @@ public class Student extends Person {
 
     }
 
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "student",
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.REMOVE})
     private List<Application> applications;
 

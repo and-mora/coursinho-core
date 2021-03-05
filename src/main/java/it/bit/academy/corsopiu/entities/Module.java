@@ -21,7 +21,7 @@ public class Module {
     @Column(name = "duration")
     private int duration;
 
-    @OneToMany
+    @OneToMany(mappedBy = "module")
     private List<Lesson> lessons;
 
     @ManyToOne

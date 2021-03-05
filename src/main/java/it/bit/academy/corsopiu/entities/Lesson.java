@@ -30,4 +30,8 @@ public class Lesson {
     @JoinColumn(name = "classroom_id")
     private Classroom classroom;
 
+    @ManyToOne
+    @JoinColumn(name = "module_id")
+    private Module module;
+
 }
