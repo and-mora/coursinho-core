@@ -31,7 +31,9 @@ public abstract class Person {
     @Column(name = "last_name")
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
     private String email;
     private String phone;
 

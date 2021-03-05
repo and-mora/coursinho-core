@@ -11,7 +11,9 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private DayWeek day;
+    
     private LocalTime start;
     private LocalTime end;
 

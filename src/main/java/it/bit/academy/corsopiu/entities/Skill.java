@@ -14,7 +14,9 @@ public class Skill {
     @JoinColumn(name = "ability_id")
     private Ability ability;
 
+    @Enumerated(EnumType.STRING)
     private Level level;
+
     private boolean certified;
 
     @ManyToOne

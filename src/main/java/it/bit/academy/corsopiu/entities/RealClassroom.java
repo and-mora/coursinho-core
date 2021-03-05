@@ -1,17 +1,25 @@
 package it.bit.academy.corsopiu.entities;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
+@DiscriminatorValue("REAL")
 public class RealClassroom extends Classroom{
 
-    private Equipment tech;
+    @Enumerated(EnumType.STRING)
+    private Equipment equipment;
 
     @Override
     public boolean hasComputer() {
-        return tech == Equipment.PC || tech == Equipment.FULL;
+        return equipment == Equipment.PC || equipment == Equipment.FULL;
     }
 
     @Override
     public boolean hasProjectors() {
-        return tech == Equipment.PROJECTOR || tech == Equipment.FULL;
+        return equipment == Equipment.PROJECTOR || equipment == Equipment.FULL;
     }
 
 }

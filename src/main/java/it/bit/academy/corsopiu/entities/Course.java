@@ -30,7 +30,8 @@ public class Course {
     private String category;
 
     @OneToMany(mappedBy = "course",
-                cascade = {})
+                cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
+                CascadeType.MERGE})
     private List<CourseEdition> editions;
 
     public Course(){}

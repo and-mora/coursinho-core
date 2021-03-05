@@ -7,6 +7,19 @@ import java.time.LocalDateTime;
 @Table(name = "application")
 public class Application {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String comments;
+
+    @Column(name = "application_date")
+    private LocalDateTime applicationDate;
+
+    @Column(name = "application_state")
+    @Enumerated(EnumType.STRING)
+    private ProcessingState applicationState;
+
     @ManyToOne()
     @JoinColumn(name = "edition_id")
     private CourseEdition edition;
@@ -15,11 +28,43 @@ public class Application {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @Column(name = "application_date")
-    private LocalDateTime applicationDate;
+    public String getComments() {
+        return comments;
+    }
 
-    @Column(name = "application_state")
-    private ProcessingState applicationState;
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-    private String comments;
+    public LocalDateTime getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(LocalDateTime applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
+    public ProcessingState getApplicationState() {
+        return applicationState;
+    }
+
+    public void setApplicationState(ProcessingState applicationState) {
+        this.applicationState = applicationState;
+    }
+
+    public CourseEdition getEdition() {
+        return edition;
+    }
+
+    public void setEdition(CourseEdition edition) {
+        this.edition = edition;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 }

@@ -1,7 +1,5 @@
 package it.bit.academy.corsopiu.entities;
 
-import org.hibernate.boot.model.source.spi.FetchCharacteristics;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,113 +8,115 @@ import java.util.List;
 @Table(name = "course_edition")
 public class CourseEdition {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-   @Column(name = "start_date")
-   private LocalDateTime startDate;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-   @ManyToOne(cascade = {})
-   @JoinColumn(name = "classroom_id")
-   private Classroom classroom;     // aula in cui si svolge il corso
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;     // aula in cui si svolge il corso
 
-   @OneToMany(mappedBy = "edition",
-               fetch = FetchType.LAZY,
-               cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
-               CascadeType.MERGE})
-   private List<Application> applications;   // elenco partecipanti
+    @OneToMany(mappedBy = "edition",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
+                    CascadeType.MERGE})
+    private List<Application> applications;   // elenco partecipanti
 
-   @Column(name = "description")
-   private String description;
+    @Column(name = "description")
+    private String description;
 
-   @OneToMany(mappedBy = "edition",
-               fetch = FetchType.LAZY,
-               cascade = {})
-   private List<Module> modules;
+    @OneToMany(mappedBy = "edition",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
+                    CascadeType.MERGE})
+    private List<Module> modules;
 
-   @OneToMany(mappedBy = "edition",
-               fetch = FetchType.LAZY,
-               cascade = {})
-   private List<Session> sessions;  // quando dovrebbero sostenersi le lezioni
+    @OneToMany(mappedBy = "edition",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
+                    CascadeType.MERGE})
+    private List<Session> sessions;  // quando dovrebbero sostenersi le lezioni
 
-   @ManyToOne(cascade = {})
-   @JoinColumn(name = "tutor_id")
-   private Person tutor;
+    @ManyToOne
+    @JoinColumn(name = "tutor_id")
+    private Person tutor;
 
-   @ManyToOne(cascade = {})
-   @JoinColumn(name = "course_id")
-   private Course course;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-   public long getId() {
-      return id;
-   }
+    public long getId() {
+        return id;
+    }
 
-   public List<Application> getApplications() {
-      return applications;
-   }
+    public List<Application> getApplications() {
+        return applications;
+    }
 
-   public void setApplications(List<Application> applications) {
-      this.applications = applications;
-   }
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }
 
-   public String getDescription() {
-      return description;
-   }
+    public String getDescription() {
+        return description;
+    }
 
-   public void setDescription(String description) {
-      this.description = description;
-   }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-   public Person getTutor() {
-      return tutor;
-   }
+    public Person getTutor() {
+        return tutor;
+    }
 
-   public void setTutor(Person tutor) {
-      this.tutor = tutor;
-   }
+    public void setTutor(Person tutor) {
+        this.tutor = tutor;
+    }
 
-   public void setId(long id) {
-      this.id = id;
-   }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-   public LocalDateTime getStartDate() {
-      return startDate;
-   }
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
 
-   public void setStartDate(LocalDateTime startDate) {
-      this.startDate = startDate;
-   }
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
 
-   public Classroom getClassroom() {
-      return classroom;
-   }
+    public Classroom getClassroom() {
+        return classroom;
+    }
 
-   public void setClassroom(Classroom classroom) {
-      this.classroom = classroom;
-   }
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
 
-   public List<Module> getModules() {
-      return modules;
-   }
+    public List<Module> getModules() {
+        return modules;
+    }
 
-   public void setModules(List<Module> modules) {
-      this.modules = modules;
-   }
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
+    }
 
-   public List<Session> getSessions() {
-      return sessions;
-   }
+    public List<Session> getSessions() {
+        return sessions;
+    }
 
-   public void setSessions(List<Session> sessions) {
-      this.sessions = sessions;
-   }
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
 
-   public Course getCourse() {
-      return course;
-   }
+    public Course getCourse() {
+        return course;
+    }
 
-   public void setCourse(Course course) {
-      this.course = course;
-   }
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

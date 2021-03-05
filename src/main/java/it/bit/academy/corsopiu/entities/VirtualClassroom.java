@@ -1,5 +1,10 @@
 package it.bit.academy.corsopiu.entities;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("VIRT")
 public class VirtualClassroom extends Classroom{
 
     private String platform;

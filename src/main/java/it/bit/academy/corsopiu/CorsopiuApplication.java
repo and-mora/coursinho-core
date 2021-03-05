@@ -1,7 +1,9 @@
 package it.bit.academy.corsopiu;
 
-import it.bit.academy.corsopiu.entities.Course;
-import it.bit.academy.corsopiu.entities.CourseEdition;
+import it.bit.academy.corsopiu.entities.Gender;
+import it.bit.academy.corsopiu.entities.Student;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
