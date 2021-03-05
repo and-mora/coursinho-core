@@ -1,4 +1,4 @@
-package it.bit.gestionalecorsi.entities;
+package it.bit.academy.corsopiu.entities;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +9,7 @@ public class Lesson {
     private LocalDateTime start;
     private LocalDateTime end;
     private Teacher teacher;
-    private List<Presence> presences;
+    private List<Attendance> attendances;
     private Classroom classroom;
 
 }

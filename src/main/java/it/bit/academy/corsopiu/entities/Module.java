@@ -1,4 +1,4 @@
-package it.bit.gestionalecorsi.entities;
+package it.bit.academy.corsopiu.entities;
 
 import java.util.List;
 
@@ -8,5 +8,6 @@ public class Module {
     private Person teacher;
     private int durationHours;
     private List<Lesson> lessons;
+    private String description;
 
 }

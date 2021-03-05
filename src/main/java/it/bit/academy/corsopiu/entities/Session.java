@@ -1,4 +1,4 @@
-package it.bit.gestionalecorsi.entities;
+package it.bit.academy.corsopiu.entities;
 
 import java.time.LocalTime;
 

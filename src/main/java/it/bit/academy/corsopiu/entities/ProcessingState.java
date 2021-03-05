@@ -1,5 +1,5 @@
-package it.bit.gestionalecorsi.entities;
+package it.bit.academy.corsopiu.entities;
 
 public enum ProcessingState {
-    RECEIVED, EVALUATING, REJECTED, APPROVED
+    RECEIVED, PENDING, REJECTED, APPROVED
 }

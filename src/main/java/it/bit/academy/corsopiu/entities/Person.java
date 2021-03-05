@@ -1,7 +1,7 @@
-package it.bit.gestionalecorsi.entities;
+package it.bit.academy.corsopiu.entities;
 
-import it.bit.gestionalecorsi.entities.Address;
-import it.bit.gestionalecorsi.entities.Skill;
+import it.bit.academy.corsopiu.entities.Address;
+import it.bit.academy.corsopiu.entities.Skill;
 
 import java.time.LocalDate;
 import java.util.List;
