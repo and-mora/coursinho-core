@@ -22,4 +22,11 @@ public class RealClassroom extends Classroom{
         return equipment == Equipment.PROJECTOR || equipment == Equipment.FULL;
     }
 
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 }

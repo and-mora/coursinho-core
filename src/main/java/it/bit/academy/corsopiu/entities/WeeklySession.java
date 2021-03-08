@@ -20,4 +20,44 @@ public class WeeklySession {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "edition_id")
     private CourseEdition edition;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public DayWeek getDay() {
+        return day;
+    }
+
+    public void setDay(DayWeek day) {
+        this.day = day;
+    }
+
+    public LocalTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
+    public LocalTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalTime end) {
+        this.end = end;
+    }
+
+    public CourseEdition getEdition() {
+        return edition;
+    }
+
+    public void setEdition(CourseEdition edition) {
+        this.edition = edition;
+    }
 }
