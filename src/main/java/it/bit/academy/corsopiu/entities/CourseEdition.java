@@ -38,7 +38,7 @@ public class CourseEdition {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST,
                     CascadeType.MERGE})
-    private List<Session> sessions;  // quando dovrebbero sostenersi le lezioni
+    private List<WeeklySession> weeklySessions;  // quando dovrebbero sostenersi le lezioni
 
     @ManyToOne
     @JoinColumn(name = "tutor_id")
@@ -104,12 +104,12 @@ public class CourseEdition {
         this.modules = modules;
     }
 
-    public List<Session> getSessions() {
-        return sessions;
+    public List<WeeklySession> getWeeklySessions() {
+        return weeklySessions;
     }
 
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
+    public void setWeeklySessions(List<WeeklySession> weeklySessions) {
+        this.weeklySessions = weeklySessions;
     }
 
     public Course getCourse() {

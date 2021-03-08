@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "session")
-public class Session {
+@Table(name = "weekly_session")
+public class WeeklySession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
