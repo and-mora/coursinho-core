@@ -13,4 +13,9 @@ public interface CourseService {
 
     Optional<Course> getCourseById(long id);
 
+    void deleteCourse(long id);
+
+    Course saveCourse(Course course);
+
+
 }
