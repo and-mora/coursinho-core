@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,6 +49,16 @@ public class CourseController {
     @GetMapping("/categoriesCount")
     public Collection<CategoryData> categoriesCount() {
         return courseService.getCategoriesCount();
+    }
+
+    @GetMapping("/maxPrice")
+    public Double getMaxPrice() {
+        return courseService.getCourseMaxPrice();
+    }
+
+    @GetMapping("/minPrice")
+    public Double getMinPrice() {
+        return courseService.getCourseMinPrice();
     }
 
     /**

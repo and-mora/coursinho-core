@@ -43,6 +43,26 @@ public class CourseServiceImpl implements CourseService {
     }
 
     /**
+     * Get the maximum price among courses
+     *
+     * @return
+     */
+    @Override
+    public Double getCourseMaxPrice() {
+        return this.courseRepo.getMaxPrice();
+    }
+
+    /**
+     * Get the minimum price among courses
+     *
+     * @return
+     */
+    @Override
+    public Double getCourseMinPrice() {
+        return this.courseRepo.getMinPrice();
+    }
+
+    /**
      * Get only one course
      *
      * @param id

@@ -12,6 +12,10 @@ public interface CourseService {
 
     Collection<CategoryData> getCategoriesCount();
 
+    Double getCourseMaxPrice();
+
+    Double getCourseMinPrice();
+
     Optional<Course> getCourseById(long id);
 
     void deleteCourse(long id);

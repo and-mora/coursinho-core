@@ -14,4 +14,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "group by c.category " +
             "order by count(*) desc")
     List<CategoryData> getCategoriesCount();
+
+    @Query("select max(c.price) from Course as c")
+    Double getMaxPrice();
+
+    @Query("select min(c.price) from Course as c")
+    Double getMinPrice();
 }
