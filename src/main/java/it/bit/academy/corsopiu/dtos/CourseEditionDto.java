@@ -20,6 +20,15 @@ public class CourseEditionDto {
         this.courseId = ce.getCourse().getId();
     }
 
+    public CourseEdition toCourseEdition() {
+        CourseEdition courseEdition = new CourseEdition();
+        courseEdition.setId(this.getId());
+        courseEdition.setStartDate(this.getStartDate());
+        courseEdition.setDescription(this.getDescription());
+        //courseEdition.setTutor(this.getTutorId());
+        return courseEdition;
+    }
+
     private long id;
 
     private LocalDate startDate;
