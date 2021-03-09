@@ -6,10 +6,12 @@ import it.bit.academy.corsopiu.services.abstractions.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private CourseRepository courseRepo;
@@ -19,20 +21,57 @@ public class CourseServiceImpl implements CourseService {
         this.courseRepo = courseRepo;
     }
 
+    /**
+     * Get a collection of courses
+     *
+     * @return
+     */
     @Override
     public Collection<Course> getCourses() {
         return this.courseRepo.findAll();
     }
 
+    /**
+     * Get a collection of categories
+     *
+     * @return
+     */
     @Override
     public Collection<String> getAllCategories() {
         return null;
     }
 
+    /**
+     * Get only one course
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Optional<Course> getCourseById(long id) {
         return this.courseRepo.findById(id);
     }
 
-    // crud per course edition
+    /**
+     * Delete course
+     *
+     * @param id
+     */
+    @Override
+    public void deleteCourse(long id) {
+        this.courseRepo.deleteById(id);
+    }
+
+    /**
+     * Crea a new course
+     *
+     * @param course
+     * @return
+     */
+    @Override
+    public Course saveCourse(Course course) {
+        return this.courseRepo.save(course);
+    }
+
+// crud per course edition
 }
