@@ -1,6 +1,6 @@
 package it.bit.academy.corsopiu.dtos;
 
-import it.bit.academy.corsopiu.entities.CourseEdition;
+import it.bit.academy.corsopiu.entities.*;
 
 import java.time.LocalDate;
 
@@ -25,7 +25,19 @@ public class CourseEditionDto {
         courseEdition.setId(this.getId());
         courseEdition.setStartDate(this.getStartDate());
         courseEdition.setDescription(this.getDescription());
-        //courseEdition.setTutor(this.getTutorId());
+
+        Person person = new Employee();
+        person.setId(this.getTutorId());
+        courseEdition.setTutor(person);
+
+        Course course = new Course();
+        course.setId(this.getCourseId());
+        courseEdition.setCourse(course);
+
+        Classroom classroom = new RealClassroom();
+        classroom.setId(this.getClassroomId());
+        courseEdition.setClassroom(classroom);
+
         return courseEdition;
     }
 

@@ -56,7 +56,6 @@ public class CourseController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
-
         Optional<Course> opt = courseService.getCourseById(id);
 
         if (opt.isEmpty()) {
