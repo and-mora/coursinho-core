@@ -1,5 +1,6 @@
 package it.bit.academy.corsopiu.services.implementations;
 
+import it.bit.academy.corsopiu.dtos.CategoryData;
 import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.repositories.CourseRepository;
 import it.bit.academy.corsopiu.services.abstractions.CourseService;
@@ -25,8 +26,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Collection<String> getAllCategories() {
-        return null;
+    public Collection<CategoryData> getCategoriesCount() {
+        return this.courseRepo.getCategoriesCount();
     }
 
     @Override

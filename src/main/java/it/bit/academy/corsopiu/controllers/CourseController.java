@@ -1,5 +1,6 @@
 package it.bit.academy.corsopiu.controllers;
 
+import it.bit.academy.corsopiu.dtos.CategoryData;
 import it.bit.academy.corsopiu.dtos.CourseDto;
 import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.services.abstractions.CourseService;
@@ -35,10 +36,9 @@ public class CourseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/allcategories/")
-    public Collection<String> allCategories() {
-
-        return courseService.getAllCategories();
+    @GetMapping("/categoriesCount")
+    public Collection<CategoryData> categoriesCount() {
+        return courseService.getCategoriesCount();
     }
 
     @GetMapping("/{id}")
@@ -53,5 +53,6 @@ public class CourseController {
         return new ResponseEntity<>(new CourseDto(opt.get()), HttpStatus.OK);
 
     }
+
 
 }
