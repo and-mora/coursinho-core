@@ -1,6 +1,6 @@
 package it.bit.academy.corsopiu.dtos;
 
-import it.bit.academy.corsopiu.entities.CourseEdition;
+import it.bit.academy.corsopiu.entities.*;
 
 import java.time.LocalDate;
 
@@ -18,6 +18,27 @@ public class CourseEditionDto {
         this.tutorId = ce.getTutor().getId();
         this.tutorName = ce.getTutor().getFirstName() + " " + ce.getTutor().getLastName();
         this.courseId = ce.getCourse().getId();
+    }
+
+    public CourseEdition toCourseEdition() {
+        CourseEdition courseEdition = new CourseEdition();
+        courseEdition.setId(this.getId());
+        courseEdition.setStartDate(this.getStartDate());
+        courseEdition.setDescription(this.getDescription());
+
+        Person person = new Employee();
+        person.setId(this.getTutorId());
+        courseEdition.setTutor(person);
+
+        Course course = new Course();
+        course.setId(this.getCourseId());
+        courseEdition.setCourse(course);
+
+        Classroom classroom = new RealClassroom();
+        classroom.setId(this.getClassroomId());
+        courseEdition.setClassroom(classroom);
+
+        return courseEdition;
     }
 
     private long id;

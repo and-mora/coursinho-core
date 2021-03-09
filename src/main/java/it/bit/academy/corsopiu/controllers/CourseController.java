@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,6 +24,11 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    /**
+     * Get a collection of courses
+     *
+     * @return
+     */
     @GetMapping("/")
     public ResponseEntity<Collection<CourseDto>> allCourses() {
         // recuperiamo l'elenco dei corsi dal service
@@ -36,23 +39,73 @@ public class CourseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Get a collection of categories
+     *
+     * @return
+     */
     @GetMapping("/categoriesCount")
     public Collection<CategoryData> categoriesCount() {
         return courseService.getCategoriesCount();
     }
 
+    /**
+     * Get only one course
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
-
         Optional<Course> opt = courseService.getCourseById(id);
 
-        if(opt.isEmpty()) {
+        if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(new CourseDto(opt.get()), HttpStatus.OK);
-
     }
 
+    /**
+     * Delete a course
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CourseDto> deleteCourseById(@PathVariable long id) {
+
+        Optional<Course> course = courseService.getCourseById(id);
+        if (course.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else {
+            courseService.deleteCourse(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Create a new course
+     *
+     * @param dto
+     * @return
+     */
+    @PostMapping("/create")
+    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto dto) {
+        Course course = dto.toCourse();
+
+        Course saved = courseService.saveCourse(course);
+        CourseDto saveDto = new CourseDto(saved);
+        return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
+    }
+
+
+    //update
+    //delete
+    //save solo course
+
+    //get all edizioni, per corsi id
+    //get module
+
+    //
 
 }
