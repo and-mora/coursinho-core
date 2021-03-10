@@ -32,6 +32,14 @@ public class Application {
         return comments;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setComments(String comments) {
         this.comments = comments;
     }
