@@ -24,12 +24,15 @@ public class PersonDto {
         if (p instanceof Employee){
             Employee pt = (Employee) p;
             this.personType = PersonType.EMPL;
+            this.role = pt.getRole();
+            this.salary = pt.getSalary();
         }else if(p instanceof Student){
             Student st = (Student) p;
             this.personType = PersonType.STUD;
         }else{
             Teacher th = (Teacher) p;
             this.personType = PersonType.TEACH;
+            this.hourlyWage = th.getHourlyWage();
         }
     }
 
