@@ -29,13 +29,10 @@ public class CourseEditionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseEditionDto> findCourseEditionById(@PathVariable long id) {
-
         Optional<CourseEdition> opt = courseEditionService.getCourseEditionById(id);
-
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(new CourseEditionDto(opt.get()), HttpStatus.OK);
     }
 
@@ -43,11 +40,24 @@ public class CourseEditionController {
     public ResponseEntity<Collection<ModuleDto>> findModulesByCourseEditionId(@PathVariable long id) {
         // retrieve data
         Collection<Module> list = this.courseEditionService.getModuleByCourseEditionId(id);
-
         // conversion from entity to dto
         List<ModuleDto> result = list.stream().map(ModuleDto::new).collect(Collectors.toList());
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Get a list of Course Edition
+     *
+     * @param id key of the course
+     * @return List Dto Course Edition
+     */
+    @GetMapping("/byCourseId/{id}")
+    public ResponseEntity<Collection<CourseEditionDto>> findCourseEditionsByCourseId(@PathVariable long id) {
+        Collection<CourseEdition> listCourseEditionById = this.courseEditionService.getAllCoursesEditionsByIdCourse(id);
+        List<CourseEditionDto> result = listCourseEditionById.stream().map(CourseEditionDto::new).collect(Collectors.toList());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //courseId
+    //findCourseEditionsByCourseId
 }

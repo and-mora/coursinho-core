@@ -70,7 +70,6 @@ public class CourseController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
         Optional<Course> opt = courseService.getCourseById(id);
-
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -90,7 +89,6 @@ public class CourseController {
         if (course.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else {
             courseService.deleteCourse(id);
-
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
@@ -104,7 +102,6 @@ public class CourseController {
     @PostMapping("/create")
     public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto dto) {
         Course course = dto.toCourse();
-
         Course saved = courseService.saveCourse(course);
         CourseDto saveDto = new CourseDto(saved);
         return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
