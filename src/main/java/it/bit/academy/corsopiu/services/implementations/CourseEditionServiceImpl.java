@@ -38,7 +38,7 @@ public class CourseEditionServiceImpl implements CourseEditionService {
 
     @Override
     public Optional<CourseEdition> getCourseEditionById(long id) {
-        return Optional.empty();
+        return this.courseEditionRepo.findById(id);
     }
 
     @Override
@@ -83,5 +83,13 @@ public class CourseEditionServiceImpl implements CourseEditionService {
 
     }
 
+    @Override
+    public Collection<CourseEdition> getAllCoursesEditions() {
+        return this.courseEditionRepo.findAll();
+    }
 
+    @Override
+    public void deleteCourseEdition(long id) {
+        this.courseEditionRepo.deleteById(id);
+    }
 }
