@@ -6,10 +6,14 @@ import it.bit.academy.corsopiu.exceptions.EntityNotFoundException;
 import it.bit.academy.corsopiu.repositories.*;
 import it.bit.academy.corsopiu.services.abstractions.CourseEditionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class CourseEditionServiceImpl implements CourseEditionService {
 
     private CourseEditionRepository courseEditionRepo;
