@@ -9,7 +9,6 @@ import java.util.Collection;
 
 public interface ModuleRepository extends JpaRepository<Module, Long> {
 
-    // TO FIX
-    @Query("select m from Module as m where m.edition.getId() = :editionId")
+    @Query("select m from Module as m where m.edition.id = :editionId")
     Collection<Module> getByCouseEditionId(@Param("editionId") Long editionId);
 }
