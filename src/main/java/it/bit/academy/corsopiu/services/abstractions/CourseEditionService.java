@@ -13,5 +13,9 @@ public interface CourseEditionService {
 
     Collection<Module> getModuleByCourseEditionId(long id);
 
+
     CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException;
+
+    Collection<CourseEdition> getAllCoursesEditionsByIdCourse(long id);
+
 }
