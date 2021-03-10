@@ -1,9 +1,12 @@
 package it.bit.academy.corsopiu.controllers;
 
+import it.bit.academy.corsopiu.dtos.CourseDto;
 import it.bit.academy.corsopiu.dtos.CourseEditionDto;
 import it.bit.academy.corsopiu.dtos.ModuleDto;
+import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.entities.CourseEdition;
 import it.bit.academy.corsopiu.entities.Module;
+import it.bit.academy.corsopiu.exceptions.EntityNotFoundException;
 import it.bit.academy.corsopiu.services.abstractions.CourseEditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,23 @@ public class CourseEditionController {
         this.courseEditionService = courseEditionService;
     }
 
+    /**
+     * Get all Course Edition
+     *
+     * @return
+     */
+    @GetMapping("/")
+    public ResponseEntity<Collection<CourseEditionDto>> getAllCoursesEditions() {
+        Collection<CourseEdition> listCourseEdition = courseEditionService.getAllCoursesEditions();
+        List<CourseEditionDto> result = listCourseEdition.stream().map(CourseEditionDto::new).collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CourseEditionDto> findCourseEditionById(@PathVariable long id) {
         Optional<CourseEdition> opt = courseEditionService.getCourseEditionById(id);
@@ -36,6 +56,10 @@ public class CourseEditionController {
         return new ResponseEntity<>(new CourseEditionDto(opt.get()), HttpStatus.OK);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("/modules/{id}")
     public ResponseEntity<Collection<ModuleDto>> findModulesByCourseEditionId(@PathVariable long id) {
         // retrieve data
@@ -58,6 +82,62 @@ public class CourseEditionController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //courseId
-    //findCourseEditionsByCourseId
+    /**
+     * Create a new Course Edition
+     *
+     * @param courseEditionDto
+     * @return
+     */
+    @PostMapping("/")
+    public ResponseEntity<CourseEditionDto> createCourseEdition(@RequestBody CourseEditionDto courseEditionDto) {
+        CourseEdition courseEdition = courseEditionDto.toCourseEdition();
+        CourseEdition saved = null;
+
+        try {
+            saved = courseEditionService.createCourseEdition(courseEdition);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        CourseEditionDto saveDto = new CourseEditionDto(saved);
+        return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
+    }
+
+    /**
+     * Delete a Course Edition
+     *
+     * @param id key of the course edition
+     * @return HttpStatus
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CourseEditionDto> deleteCourseById(@PathVariable long id) {
+        Optional<CourseEdition> courseEdition = courseEditionService.getCourseEditionById(id);
+        if (courseEdition.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else {
+            courseEditionService.deleteCourseEdition(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+    }
+
+    /**
+     * Update the course edition
+     *
+     * @param courseEditionDto
+     * @return
+     */
+    @PutMapping("/")
+    public ResponseEntity<CourseEditionDto> updateCourseEdition(@RequestBody CourseEditionDto courseEditionDto) {
+//        Optional<CourseEdition> newCourseEdition = courseEditionService.getCourseEditionById(courseEditionDto.getCourseId());
+//        if (newCourseEdition.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        CourseEdition courseEdition = courseEditionDto.toCourseEdition();
+        CourseEdition saved = null;
+        try {
+            saved = courseEditionService.createCourseEdition(courseEdition);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        CourseEditionDto saveDto = new CourseEditionDto(saved);
+        return new ResponseEntity<>(saveDto, HttpStatus.OK);
+    }
 }
