@@ -51,11 +51,17 @@ public class CourseController {
         return courseService.getCategoriesCount();
     }
 
+    /**
+     * @return
+     */
     @GetMapping("/maxPrice")
     public Double getMaxPrice() {
         return courseService.getCourseMaxPrice();
     }
 
+    /**
+     * @return
+     */
     @GetMapping("/minPrice")
     public Double getMinPrice() {
         return courseService.getCourseMinPrice();
@@ -88,7 +94,6 @@ public class CourseController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
         Optional<Course> opt = courseService.getCourseById(id);
-
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -108,7 +113,6 @@ public class CourseController {
         if (course.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else {
             courseService.deleteCourse(id);
-
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
@@ -119,23 +123,28 @@ public class CourseController {
      * @param dto
      * @return
      */
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto dto) {
         Course course = dto.toCourse();
-
         Course saved = courseService.saveCourse(course);
         CourseDto saveDto = new CourseDto(saved);
         return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
     }
 
+    /**
+     * Update course
+     *
+     * @param courseDto
+     * @return dto course update
+     */
+    @PutMapping("/")
+    public ResponseEntity<CourseDto> updateCourse(@RequestBody CourseDto courseDto) {
+        Optional<Course> newCourse = courseService.getCourseById(courseDto.getId());
+        if (newCourse.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-    //update
-    //delete
-    //save solo course
-
-    //get all edizioni, per corsi id
-    //get module
-
-    //
-
+        Course course = courseDto.toCourse();
+        Course saved = courseService.saveCourse(course);
+        CourseDto saveDto = new CourseDto(saved);
+        return new ResponseEntity<>(saveDto, HttpStatus.OK);
+    }
 }

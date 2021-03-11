@@ -19,6 +19,10 @@ public class Student extends Person {
             cascade = {CascadeType.REMOVE})
     private List<Application> applications;
 
+    public Student() {
+
+    }
+
     public List<Application> getApplications() {
         return applications;
     }

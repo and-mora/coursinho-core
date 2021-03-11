@@ -35,6 +35,7 @@ public class CourseEditionServiceImpl implements CourseEditionService {
         this.classroomRepo = classroomRepo;
     }
 
+
     @Override
     public Optional<CourseEdition> getCourseEditionById(long id) {
         return this.courseEditionRepo.findById(id);
@@ -45,6 +46,13 @@ public class CourseEditionServiceImpl implements CourseEditionService {
         return this.moduleRepo.getByCouseEditionId(editionId);
     }
 
+    /**
+     * Create a new edition course
+     *
+     * @param courseEdition
+     * @return
+     * @throws EntityNotFoundException
+     */
     @Override
     public CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException {
         Optional<Person> tutor = personRepo.findById(courseEdition.getTutor().getId());
@@ -66,5 +74,22 @@ public class CourseEditionServiceImpl implements CourseEditionService {
         courseEdition.setCourse(course.get());
 
         return this.courseEditionRepo.save(courseEdition);
+    }
+
+
+    @Override
+    public Collection<CourseEdition> getAllCoursesEditionsByIdCourse(long id) {
+        return this.courseEditionRepo.getAllCoursesEditionsByIdCourseQuery(id);
+
+    }
+
+    @Override
+    public Collection<CourseEdition> getAllCoursesEditions() {
+        return this.courseEditionRepo.findAll();
+    }
+
+    @Override
+    public void deleteCourseEdition(long id) {
+        this.courseEditionRepo.deleteById(id);
     }
 }
