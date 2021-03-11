@@ -73,6 +73,22 @@ public class CourseServiceImpl implements CourseService {
         return this.courseRepo.findById(id);
     }
 
+    @Override
+    public Collection<Course> getCoursesByCategoryLike(String categoryLike) {
+        return this.courseRepo.findByCategoryLike(categoryLike);
+    }
+
+    @Override
+    public Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice) {
+        return this.courseRepo.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
+    }
+
+    @Override
+    public Collection<Course> getCoursesWithEditions() {
+        return this.courseRepo.limit();
+    }
+
+
     /**
      * Delete course
      *

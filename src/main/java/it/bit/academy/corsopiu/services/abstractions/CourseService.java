@@ -18,6 +18,12 @@ public interface CourseService {
 
     Optional<Course> getCourseById(long id);
 
+    Collection<Course> getCoursesByCategoryLike(String categoryLike);
+
+    Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice);
+
+    Collection<Course> getCoursesWithEditions();
+
     void deleteCourse(long id);
 
     Course saveCourse(Course course);

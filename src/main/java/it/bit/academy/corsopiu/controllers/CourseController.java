@@ -61,6 +61,24 @@ public class CourseController {
         return courseService.getCourseMinPrice();
     }
 
+    @GetMapping("/coursesBetweenPrices/{min}-{max}")
+    public ResponseEntity<Collection<CourseDto>> getCoursesBetweenPrices(@PathVariable double min, @PathVariable double max) {
+
+        Collection<Course> courses = this.courseService.getCoursesBetweenPrices(min, max);
+        List<CourseDto> result = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/withEdition")
+    public ResponseEntity<Collection<CourseDto>> getCoursesWithEditions() {
+        Collection<Course> courses = this.courseService.getCoursesWithEditions();
+
+        List<CourseDto> result = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     /**
      * Get only one course
      *
