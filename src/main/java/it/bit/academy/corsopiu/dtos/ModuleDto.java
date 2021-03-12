@@ -14,7 +14,7 @@ public class ModuleDto {
         this.name = module.getName();
         this.description = module.getDescription();
         this.teacherId = module.getTeacher().getId();
-        this.teacherName = module.getTeacher().getFirstName() + " " + module.getTeacher().getLastName();
+        this.teacherName = module.getTeacher().getFirstName() + "," + module.getTeacher().getLastName();
         this.duration = module.getDuration();
         this.editionId = module.getEdition().getId();
     }

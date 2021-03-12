@@ -1,15 +1,13 @@
 package it.bit.academy.corsopiu.dtos;
 
 import it.bit.academy.corsopiu.entities.Course;
-import it.bit.academy.corsopiu.entities.CourseEdition;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CourseDto {
-
-
+    
     private long id;
     private String name;
     private int duration;
@@ -42,7 +40,7 @@ public class CourseDto {
         course.setProgram(this.getProgram());
         course.setCertification(this.isCertification());
         course.setCategory(this.getCategory());
-        course.setEditions(new ArrayList<CourseEdition>());
+        course.setEditions(new ArrayList<>());
         return course;
     }
 

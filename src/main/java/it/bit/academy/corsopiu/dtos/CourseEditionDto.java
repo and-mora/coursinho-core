@@ -16,7 +16,7 @@ public class CourseEditionDto {
         this.classroomName = ce.getClassroom().getName();
         this.description = ce.getDescription();
         this.tutorId = ce.getTutor().getId();
-        this.tutorName = ce.getTutor().getFirstName() + " " + ce.getTutor().getLastName();
+        this.tutorName = ce.getTutor().getFirstName() + "," + ce.getTutor().getLastName();
         this.courseId = ce.getCourse().getId();
     }
 

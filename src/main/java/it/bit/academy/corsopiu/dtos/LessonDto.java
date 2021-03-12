@@ -1,32 +1,28 @@
 package it.bit.academy.corsopiu.dtos;
 
-import it.bit.academy.corsopiu.entities.*;
 import it.bit.academy.corsopiu.entities.Module;
-import org.springframework.jdbc.core.DataClassRowMapper;
+import it.bit.academy.corsopiu.entities.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class LessonDto {
 
-    public LessonDto(){
+    public LessonDto() {
     }
 
-    public LessonDto(Lesson l){
+    public LessonDto(Lesson l) {
         this.id = l.getId();
         this.subject = l.getSubject();
         this.start = l.getStart();
         this.end = l.getEnd();
         this.teacherId = l.getTeacher().getId();
-        this.teacherName = l.getTeacher().getFirstName() + " " + l.getTeacher().getLastName();
+        this.teacherName = l.getTeacher().getFirstName() + "," + l.getTeacher().getLastName();
         this.classroomId = l.getClassroom().getId();
         this.classroomName = l.getClassroom().getName();
         this.moduleId = l.getModule().getId();
-
-
     }
 
-    public Lesson toLesson(){
+    public Lesson toLesson() {
         Lesson lesson = new Lesson();
 
         lesson.setId(this.getId());
@@ -38,7 +34,6 @@ public class LessonDto {
         teacher.setId(this.getTeacherId());
         teacher.setFirstName(this.getTeacherName());
 
-
         Classroom classroom = new RealClassroom();
         classroom.setId(this.getClassroomId());
         lesson.setClassroom(classroom);
@@ -46,7 +41,6 @@ public class LessonDto {
         Module module = new Module();
         module.setId(this.getId());
         lesson.setModule(module);
-
 
         return lesson;
     }
