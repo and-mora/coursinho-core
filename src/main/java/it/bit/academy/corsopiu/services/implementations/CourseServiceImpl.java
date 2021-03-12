@@ -1,10 +1,15 @@
 package it.bit.academy.corsopiu.services.implementations;
 
 import it.bit.academy.corsopiu.dtos.CategoryData;
+import it.bit.academy.corsopiu.dtos.Paginator;
 import it.bit.academy.corsopiu.entities.Course;
+import it.bit.academy.corsopiu.repositories.CourseEditionRepository;
 import it.bit.academy.corsopiu.repositories.CourseRepository;
 import it.bit.academy.corsopiu.services.abstractions.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,10 +21,13 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService {
 
     private CourseRepository courseRepo;
+    private CourseEditionRepository courseEditionRepo;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepo) {
+    public CourseServiceImpl(CourseRepository courseRepo,
+                             CourseEditionRepository courseEditionRepo) {
         this.courseRepo = courseRepo;
+        this.courseEditionRepo = courseEditionRepo;
     }
 
     /**
@@ -39,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Collection<CategoryData> getCategoriesCount() {
-        return this.courseRepo.getCategoriesCount();
+        return this.courseRepo.findByCategoriesCount();
     }
 
     /**
@@ -49,7 +57,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Double getCourseMaxPrice() {
-        return this.courseRepo.getMaxPrice();
+        return this.courseRepo.findByMaxPrice();
     }
 
     /**
@@ -59,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Double getCourseMinPrice() {
-        return this.courseRepo.getMinPrice();
+        return this.courseRepo.findByMinPrice();
     }
 
     /**
@@ -74,6 +82,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg) {
+        return this.courseRepo.findByCategoryLikePaged(categoryLike, PageRequest.of(
+                pg.getNumPage(), pg.getElementsPerPage(),
+                Sort.by(Sort.Direction.DESC, pg.getOrderBy())));
+    }
+
+    @Override
     public Collection<Course> getCoursesByCategoryLike(String categoryLike) {
         return this.courseRepo.findByCategoryLike(categoryLike);
     }
@@ -85,9 +100,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Collection<Course> getCoursesWithEditions() {
-        return this.courseRepo.limit();
+        return this.courseRepo.findByCoursesWithEditions();
     }
-
 
     /**
      * Delete course

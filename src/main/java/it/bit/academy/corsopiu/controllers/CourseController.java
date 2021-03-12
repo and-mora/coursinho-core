@@ -1,14 +1,17 @@
 package it.bit.academy.corsopiu.controllers;
 
-import it.bit.academy.corsopiu.dtos.CategoryData;
 import it.bit.academy.corsopiu.dtos.CourseDto;
+import it.bit.academy.corsopiu.dtos.CourseEditionPresentation;
 import it.bit.academy.corsopiu.entities.Course;
+import it.bit.academy.corsopiu.entities.CourseEdition;
+import it.bit.academy.corsopiu.services.abstractions.CourseEditionService;
 import it.bit.academy.corsopiu.services.abstractions.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +23,13 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     private CourseService courseService;
+    private CourseEditionService courseEditionService;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService,
+                            CourseEditionService courseEditionService) {
         this.courseService = courseService;
+        this.courseEditionService = courseEditionService;
     }
 
     /**
@@ -31,40 +37,30 @@ public class CourseController {
      *
      * @return
      */
-    @GetMapping("/")
-    public ResponseEntity<Collection<CourseDto>> allCourses() {
+    @GetMapping("/select")
+    public ResponseEntity<Collection<CourseDto>> allCourses(@RequestParam String select) {
         // recuperiamo l'elenco dei corsi dal service
         Collection<Course> listaCorsi = courseService.getCourses();
         // conversione da entity a dto
-//        return listaCorsi.stream().map(e -> new CourseDto(e)).collect(Collectors.toList());
         List<CourseDto> result = listaCorsi.stream().map(CourseDto::new).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    /**
-     * Get a collection of categories
-     *
-     * @return
-     */
-    @GetMapping("/categoriesCount")
-    public Collection<CategoryData> categoriesCount() {
-        return courseService.getCategoriesCount();
-    }
+    @GetMapping("/select/{value}")
+    public ResponseEntity<Object> getSelect(@PathVariable String value) {
 
-    /**
-     * @return
-     */
-    @GetMapping("/maxPrice")
-    public Double getMaxPrice() {
-        return courseService.getCourseMaxPrice();
-    }
+        switch (value) {
+            case "min-price":
+                return new ResponseEntity<>(courseService.getCourseMinPrice(), HttpStatus.OK);
+            case "max-price":
+                return new ResponseEntity<>(courseService.getCourseMaxPrice(), HttpStatus.OK);
+            case "categories-count":
+                return new ResponseEntity<>(courseService.getCategoriesCount(), HttpStatus.OK);
+            default:
+                break;
+        }
 
-    /**
-     * @return
-     */
-    @GetMapping("/minPrice")
-    public Double getMinPrice() {
-        return courseService.getCourseMinPrice();
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/coursesBetweenPrices/{min}-{max}")
@@ -77,12 +73,27 @@ public class CourseController {
     }
 
     @GetMapping("/withEdition")
-    public ResponseEntity<Collection<CourseDto>> getCoursesWithEditions() {
+    public ResponseEntity<Collection<CourseEditionPresentation>> getCoursesWithOneEdition() {
         Collection<Course> courses = this.courseService.getCoursesWithEditions();
+        Collection<CourseEditionPresentation> results = new ArrayList<>(courses.size());
 
-        List<CourseDto> result = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+        for (Course c : courses) {
+            Optional<CourseEdition> opt = this.courseEditionService.getFirstByCourseOrderByStartDateDesc(c);
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+            if (opt.isEmpty()) {
+                continue;
+            }
+
+            CourseEditionPresentation cep = new CourseEditionPresentation();
+            cep.setCourseId(c.getId());
+            cep.setCourseEditionId(opt.get().getId());
+            cep.setCategory(c.getCategory());
+            cep.setName(c.getName());
+
+            results.add(cep);
+        }
+
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
     /**
