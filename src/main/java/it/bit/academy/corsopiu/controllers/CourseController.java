@@ -37,8 +37,8 @@ public class CourseController {
      *
      * @return
      */
-    @GetMapping("/select")
-    public ResponseEntity<Collection<CourseDto>> allCourses(@RequestParam String select) {
+    @GetMapping("/")
+    public ResponseEntity<Collection<CourseDto>> allCourses() {
         // recuperiamo l'elenco dei corsi dal service
         Collection<Course> listaCorsi = courseService.getCourses();
         // conversione da entity a dto

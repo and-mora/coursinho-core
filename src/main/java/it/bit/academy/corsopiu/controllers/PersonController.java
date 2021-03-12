@@ -1,6 +1,5 @@
 package it.bit.academy.corsopiu.controllers;
 
-import it.bit.academy.corsopiu.dtos.CourseDto;
 import it.bit.academy.corsopiu.dtos.PersonDto;
 import it.bit.academy.corsopiu.entities.Person;
 import it.bit.academy.corsopiu.services.abstractions.PersonService;
@@ -21,7 +20,6 @@ public class PersonController {
 
 
     private PersonService personService;
-
 
     @Autowired
     PersonController(PersonService personService) {
@@ -46,6 +44,21 @@ public class PersonController {
         Collection<Person> listPerson = personService.getPersons();
         List<PersonDto> result = listPerson.stream().map(PersonDto::new).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/{value}")
+    public ResponseEntity<Collection<PersonDto>> getPersonsByType(@PathVariable String value) {
+
+        switch (value) {
+            case "teachers":
+                return new ResponseEntity<>(personService.getTeachers().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+            case "students":
+                return new ResponseEntity<>(personService.getStudents().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+            case "employees":
+                return new ResponseEntity<>(personService.getEmployees().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**

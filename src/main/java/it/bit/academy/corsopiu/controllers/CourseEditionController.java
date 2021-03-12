@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/courseEdition")
+@RequestMapping("/api/course-edition")
 @CrossOrigin
 public class CourseEditionController {
 
@@ -58,7 +58,7 @@ public class CourseEditionController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}/modules/")
+    @GetMapping("/{id}/modules")
     public ResponseEntity<Collection<ModuleDto>> getModulesByCourseEditionId(@PathVariable long id) {
         // retrieve data
         Collection<Module> list = this.courseEditionService.getModuleByCourseEditionId(id);
