@@ -1,9 +1,7 @@
 package it.bit.academy.corsopiu.controllers;
 
-import it.bit.academy.corsopiu.dtos.CourseDto;
 import it.bit.academy.corsopiu.dtos.CourseEditionDto;
 import it.bit.academy.corsopiu.dtos.ModuleDto;
-import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.entities.CourseEdition;
 import it.bit.academy.corsopiu.entities.Module;
 import it.bit.academy.corsopiu.exceptions.EntityNotFoundException;
@@ -48,7 +46,7 @@ public class CourseEditionController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CourseEditionDto> findCourseEditionById(@PathVariable long id) {
+    public ResponseEntity<CourseEditionDto> getCourseEditionById(@PathVariable long id) {
         Optional<CourseEdition> opt = courseEditionService.getCourseEditionById(id);
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,8 +58,8 @@ public class CourseEditionController {
      * @param id
      * @return
      */
-    @GetMapping("/modules/{id}")
-    public ResponseEntity<Collection<ModuleDto>> findModulesByCourseEditionId(@PathVariable long id) {
+    @GetMapping("/{id}/modules/")
+    public ResponseEntity<Collection<ModuleDto>> getModulesByCourseEditionId(@PathVariable long id) {
         // retrieve data
         Collection<Module> list = this.courseEditionService.getModuleByCourseEditionId(id);
         // conversion from entity to dto
@@ -76,9 +74,14 @@ public class CourseEditionController {
      * @return List Dto Course Edition
      */
     @GetMapping("/byCourseId/{id}")
-    public ResponseEntity<Collection<CourseEditionDto>> findCourseEditionsByCourseId(@PathVariable long id) {
-        Collection<CourseEdition> listCourseEditionById = this.courseEditionService.getAllCoursesEditionsByIdCourse(id);
-        List<CourseEditionDto> result = listCourseEditionById.stream().map(CourseEditionDto::new).collect(Collectors.toList());
+    public ResponseEntity<Collection<CourseEditionDto>> getByCourse(@PathVariable long id) {
+        Collection<CourseEdition> editions;
+        try {
+            editions = this.courseEditionService.getByCourse(id);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<CourseEditionDto> result = editions.stream().map(CourseEditionDto::new).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

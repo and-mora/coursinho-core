@@ -57,35 +57,44 @@ public class CourseEditionServiceImpl implements CourseEditionService {
     public CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException {
         Optional<Person> tutor = personRepo.findById(courseEdition.getTutor().getId());
         if (tutor.isEmpty()) {
-            throw new EntityNotFoundException("tutore con id" + courseEdition.getTutor().getId() + " non trovato");
+            throw new EntityNotFoundException("tutore con id " + courseEdition.getTutor().getId() + " non trovato");
         }
         courseEdition.setTutor(tutor.get());
 
         Optional<Classroom> classroom = classroomRepo.findById(courseEdition.getClassroom().getId());
         if (classroom.isEmpty()) {
-            throw new EntityNotFoundException("classroom con id" + courseEdition.getClassroom().getId() + " non trovata");
+            throw new EntityNotFoundException("classroom con id " + courseEdition.getClassroom().getId() + " non trovata");
         }
         courseEdition.setClassroom(classroom.get());
 
         Optional<Course> course = courseRepo.findById(courseEdition.getCourse().getId());
         if (course.isEmpty()) {
-            throw new EntityNotFoundException("course con id" + courseEdition.getCourse().getId() + " non trovato");
+            throw new EntityNotFoundException("course con id " + courseEdition.getCourse().getId() + " non trovato");
         }
         courseEdition.setCourse(course.get());
 
         return this.courseEditionRepo.save(courseEdition);
     }
 
-
     @Override
-    public Collection<CourseEdition> getAllCoursesEditionsByIdCourse(long id) {
-        return this.courseEditionRepo.getAllCoursesEditionsByIdCourseQuery(id);
+    public Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException{
+        Optional<Course> opt = this.courseRepo.findById(id);
 
+        if(opt.isEmpty()) {
+            throw new EntityNotFoundException("course con id " + id + " non trovato");
+        }
+
+        return this.courseEditionRepo.findByCourse(opt.get());
     }
 
     @Override
     public Collection<CourseEdition> getAllCoursesEditions() {
         return this.courseEditionRepo.findAll();
+    }
+
+    @Override
+    public Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course) {
+        return this.courseEditionRepo.findFirstByCourseOrderByStartDateDesc(course);
     }
 
     @Override

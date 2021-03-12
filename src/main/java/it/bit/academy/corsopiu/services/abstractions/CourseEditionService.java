@@ -1,5 +1,6 @@
 package it.bit.academy.corsopiu.services.abstractions;
 
+import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.entities.CourseEdition;
 import it.bit.academy.corsopiu.entities.Module;
 import it.bit.academy.corsopiu.exceptions.EntityNotFoundException;
@@ -15,9 +16,11 @@ public interface CourseEditionService {
 
     CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException;
 
-    Collection<CourseEdition> getAllCoursesEditionsByIdCourse(long id);
+    Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException;
 
     Collection<CourseEdition> getAllCoursesEditions();
+
+    Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course);
 
     void deleteCourseEdition(long id);
 
