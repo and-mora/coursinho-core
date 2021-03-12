@@ -1,4 +1,4 @@
-package it.bit.academy.corsopiu.services;
+package it.bit.academy.corsopiu.services.implementations;
 
 import it.bit.academy.corsopiu.entities.Course;
 import it.bit.academy.corsopiu.repositories.CourseRepository;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,6 +68,5 @@ public class CourseServiceTest {
         assertTrue(lista.size() > 0);
 
         this.courseRepo.delete(c);
-
     }
 }
