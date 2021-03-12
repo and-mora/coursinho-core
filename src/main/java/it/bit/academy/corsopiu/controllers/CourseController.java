@@ -111,10 +111,10 @@ public class CourseController {
 
         Optional<Course> course = courseService.getCourseById(id);
         if (course.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        else {
-            courseService.deleteCourse(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
+        
+        courseService.deleteCourse(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     /**
