@@ -2,6 +2,7 @@ package it.bit.academy.corsopiu.controllers;
 
 import it.bit.academy.corsopiu.dtos.PersonDto;
 import it.bit.academy.corsopiu.entities.Person;
+import it.bit.academy.corsopiu.entities.Student;
 import it.bit.academy.corsopiu.services.abstractions.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class PersonController {
 
-
     private PersonService personService;
 
     @Autowired
@@ -26,16 +26,8 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PersonDto> findPersonById(@PathVariable long id) {
-        Optional<Person> opt = personService.getPersonById(id);
-        if (opt.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new PersonDto(opt.get()), HttpStatus.OK);
-    }
-
-
     /**
-     * Gets all the person
+     * Gets all persons
      *
      * @return
      */
@@ -46,7 +38,7 @@ public class PersonController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/{value}")
+    @GetMapping("/type/{value}")
     public ResponseEntity<Collection<PersonDto>> getPersonsByType(@PathVariable String value) {
 
         switch (value) {
@@ -59,6 +51,35 @@ public class PersonController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Get all students containing string param in firstName, lastName or fiscalCode.
+     * @param contains
+     * @return
+     */
+    @GetMapping("/students/search")
+    public ResponseEntity<Collection<PersonDto>> getStudentsContaining(@RequestParam Optional<String> contains) {
+
+        Collection<Student> students;
+
+        if(contains.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        String stringLike = contains.get();
+        students = this.personService.getStudentsContaining(stringLike, stringLike, stringLike);
+
+        Collection<PersonDto> results = students.stream().map(PersonDto::new).collect(Collectors.toList());
+
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonDto> findPersonById(@PathVariable long id) {
+        Optional<Person> opt = personService.getPersonById(id);
+        if (opt.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new PersonDto(opt.get()), HttpStatus.OK);
     }
 
     /**

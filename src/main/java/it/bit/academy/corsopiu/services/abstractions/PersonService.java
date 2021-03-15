@@ -23,5 +23,7 @@ public interface PersonService {
 
     Collection<Student> getStudents();
 
+    Collection<Student> getStudentsContaining(String firstName, String lastName, String fiscalCode);
+
     void deletePerson(long id);
 }

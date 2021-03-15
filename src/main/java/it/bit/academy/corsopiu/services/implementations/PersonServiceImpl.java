@@ -66,6 +66,10 @@ public class PersonServiceImpl implements PersonService {
         return this.studentRepo.findAll();
     }
 
+    @Override
+    public Collection<Student> getStudentsContaining(String firstName, String lastName, String fiscalCode) {
+        return this.studentRepo.findTop10ByFirstNameOrLastNameOrFiscalCodeContainsIgnoreCase(firstName, lastName, fiscalCode);
+    }
 
     @Override
     public void deletePerson(long id) {
