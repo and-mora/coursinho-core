@@ -6,6 +6,15 @@ public class CourseEditionPresentation {
     private long courseEditionId;
     private String name;
     private String category;
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public long getCourseId() {
         return courseId;

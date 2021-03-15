@@ -20,13 +20,15 @@ public interface CourseService {
 
     Optional<Course> getCourseById(long id);
 
-    Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg);
+//    Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg);
 
     Collection<Course> getCoursesByCategoryLike(String categoryLike);
 
-    Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice);
+//    Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice);
 
     Collection<Course> getCoursesWithEditions();
+
+    Collection<Course> getCoursesWithEditionsByPrice(double minPrice, double maxPrice);
 
     void deleteCourse(long id);
 

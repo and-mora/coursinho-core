@@ -81,26 +81,31 @@ public class CourseServiceImpl implements CourseService {
         return this.courseRepo.findById(id);
     }
 
-    @Override
-    public Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg) {
-        return this.courseRepo.findByCategoryLikePaged(categoryLike, PageRequest.of(
-                pg.getNumPage(), pg.getElementsPerPage(),
-                Sort.by(Sort.Direction.DESC, pg.getOrderBy())));
-    }
+//    @Override
+//    public Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg) {
+//        return this.courseRepo.findByCategoryLikePaged(categoryLike, PageRequest.of(
+//                pg.getNumPage(), pg.getElementsPerPage(),
+//                Sort.by(Sort.Direction.DESC, pg.getOrderBy())));
+//    }
 
     @Override
     public Collection<Course> getCoursesByCategoryLike(String categoryLike) {
         return this.courseRepo.findByCategoryLike(categoryLike);
     }
 
-    @Override
-    public Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice) {
-        return this.courseRepo.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
-    }
+//    @Override
+//    public Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice) {
+//        return this.courseRepo.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
+//    }
 
     @Override
     public Collection<Course> getCoursesWithEditions() {
         return this.courseRepo.findByCoursesWithEditions();
+    }
+
+    @Override
+    public Collection<Course> getCoursesWithEditionsByPrice(double minPrice, double maxPrice) {
+        return this.courseRepo.findByCoursesWithEditionsByPrices(minPrice, maxPrice);
     }
 
     /**

@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,32 +60,45 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/coursesBetweenPrices/{min}-{max}")
-    public ResponseEntity<Collection<CourseDto>> getCoursesBetweenPrices(@PathVariable double min, @PathVariable double max) {
+//    @GetMapping("/coursesBetweenPrices/{min}-{max}")
+//    public ResponseEntity<Collection<CourseDto>> getCoursesBetweenPrices(@PathVariable double min, @PathVariable double max) {
+//
+//        Collection<Course> courses = this.courseService.getCoursesBetweenPrices(min, max);
+//        List<CourseDto> result = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+//
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
-        Collection<Course> courses = this.courseService.getCoursesBetweenPrices(min, max);
-        List<CourseDto> result = courses.stream().map(CourseDto::new).collect(Collectors.toList());
+    @GetMapping("/search")
+    public ResponseEntity<Collection<CourseEditionPresentation>> getCoursesWithOneEdition(
+            @RequestParam Optional<List<Double>> priceRange) {
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+        Collection<Course> courses;
 
-    @GetMapping("/withEdition")
-    public ResponseEntity<Collection<CourseEditionPresentation>> getCoursesWithOneEdition() {
-        Collection<Course> courses = this.courseService.getCoursesWithEditions();
+        if (priceRange.isPresent() && priceRange.get().size() > 0) {
+
+            Optional<Double> minPrice = priceRange.get().stream().min(Comparator.naturalOrder());
+            Optional<Double> maxPrice = priceRange.get().stream().max(Comparator.naturalOrder());
+            courses = this.courseService.getCoursesWithEditionsByPrice(minPrice.get(), maxPrice.get());
+
+        } else {
+            courses = this.courseService.getCoursesWithEditions();
+        }
+
+
         Collection<CourseEditionPresentation> results = new ArrayList<>(courses.size());
 
         for (Course c : courses) {
             Optional<CourseEdition> opt = this.courseEditionService.getFirstByCourseOrderByStartDateDesc(c);
 
-            if (opt.isEmpty()) {
-                continue;
-            }
+            if (opt.isEmpty()) continue;
 
             CourseEditionPresentation cep = new CourseEditionPresentation();
             cep.setCourseId(c.getId());
             cep.setCourseEditionId(opt.get().getId());
             cep.setCategory(c.getCategory());
             cep.setName(c.getName());
+            cep.setPrice(c.getPrice());
 
             results.add(cep);
         }
@@ -122,10 +132,9 @@ public class CourseController {
 
         Optional<Course> course = courseService.getCourseById(id);
         if (course.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        
+
         courseService.deleteCourse(id);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     /**

@@ -29,14 +29,17 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("select distinct ce.course from CourseEdition as ce ")
     Collection<Course> findByCoursesWithEditions();
 
-    @Query("select c from Course as c where c.category like :categoryLike ")
-    Page<Collection<Course>> findByCategoryLikePaged(String categoryLike, Pageable pageable);
+    @Query("select distinct ce.course from CourseEdition as ce where ce.course.price >= :minPrice and ce.course.price <= :maxPrice")
+    Collection<Course> findByCoursesWithEditionsByPrices(double minPrice, double maxPrice);
+
+    // DA TESTARE!
+//    @Query("select c from Course as c where c.category like :categoryLike ")
+//    Page<Collection<Course>> findByCategoryLikePaged(String categoryLike, Pageable pageable);
 
     Collection<Course> findByCategoryLike(String categoryLike);
 
-    Collection<Course> findByPriceGreaterThanEqualAndPriceLessThanEqual(double minPrice, double maxPrice);
+    // OBSOLETO
+//    Collection<Course> findByPriceGreaterThanEqualAndPriceLessThanEqual(double minPrice, double maxPrice);
 
-//    @Query("select ce from CourseEdition ce where  and ")
     Optional<CourseEdition> findFirstByEditions(Course course);
 }
-//    max(ce.startDate)
