@@ -69,6 +69,11 @@ public class CourseController {
 //        return new ResponseEntity<>(result, HttpStatus.OK);
 //    }
 
+    /**
+     * Get courses with edition and filter on price if priceRange is present
+     * @param priceRange
+     * @return
+     */
     @GetMapping("/search")
     public ResponseEntity<Collection<CourseEditionPresentation>> getCoursesWithOneEdition(
             @RequestParam Optional<List<Double>> priceRange) {

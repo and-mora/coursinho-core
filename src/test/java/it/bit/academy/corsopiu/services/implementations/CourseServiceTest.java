@@ -54,19 +54,19 @@ public class CourseServiceTest {
         this.courseRepo.delete(c);
     }
 
-    @Test
-    public void getCourseBetweenPrices() {
-        double minPrice = -100;
-        double maxPrice = -50;
-        double media = (maxPrice+minPrice)/2;
-        Course c = new Course();
-        c.setPrice(media);
-        this.courseRepo.save(c);
-
-        Collection<Course> lista = this.courseService.getCoursesBetweenPrices(minPrice, maxPrice);
-
-        assertTrue(lista.size() > 0);
-
-        this.courseRepo.delete(c);
-    }
+//    @Test
+//    public void getCourseBetweenPrices() {
+//        double minPrice = -100;
+//        double maxPrice = -50;
+//        double media = (maxPrice+minPrice)/2;
+//        Course c = new Course();
+//        c.setPrice(media);
+//        this.courseRepo.save(c);
+//
+//        Collection<Course> lista = this.courseService.getCoursesBetweenPrices(minPrice, maxPrice);
+//
+//        assertTrue(lista.size() > 0);
+//
+//        this.courseRepo.delete(c);
+//    }
 }
