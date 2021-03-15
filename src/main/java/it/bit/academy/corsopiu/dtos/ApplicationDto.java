@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 
 public class ApplicationDto {
 
+    public ApplicationDto() {}
+
     public ApplicationDto(Application application){
         this.id = application.getId();
         this.comments = application.getComments();
@@ -26,11 +28,11 @@ public class ApplicationDto {
         appl.setApplicationState(this.getApplicationState());
 
         CourseEdition ce = new CourseEdition();
-        ce.setId(this.getId());
+        ce.setId(this.getEditionId());
         appl.setEdition(ce);
 
         Student st = new Student();
-        st.setId(this.getId());
+        st.setId(this.getStudentId());
         appl.setStudent(st);
 
         return appl;

@@ -68,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Collection<Student> getStudentsContaining(String firstName, String lastName, String fiscalCode) {
-        return this.studentRepo.findTop10ByFirstNameOrLastNameOrFiscalCodeContainsIgnoreCase(firstName, lastName, fiscalCode);
+        return this.studentRepo.findTop10ByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCaseOrFiscalCodeContainsIgnoreCase(firstName, lastName, fiscalCode);
     }
 
     @Override
