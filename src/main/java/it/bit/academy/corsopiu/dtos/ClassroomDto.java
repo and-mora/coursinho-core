@@ -7,7 +7,7 @@ import it.bit.academy.corsopiu.entities.VirtualClassroom;
 
 public class ClassroomDto {
 
-    private ClassroomDto(Classroom classroom) {
+    public ClassroomDto(Classroom classroom) {
         this.id = classroom.getId();
         this.name = classroom.getName();
         this.title = classroom.getTitle();
