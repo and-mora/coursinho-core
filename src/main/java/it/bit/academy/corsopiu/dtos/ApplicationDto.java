@@ -9,18 +9,20 @@ import java.time.LocalDateTime;
 
 public class ApplicationDto {
 
-    public ApplicationDto() {}
+    public ApplicationDto() {
+    }
 
-    public ApplicationDto(Application application){
+    public ApplicationDto(Application application) {
         this.id = application.getId();
         this.comments = application.getComments();
         this.applicationDate = application.getApplicationDate();
         this.applicationState = application.getApplicationState();
         this.editionId = application.getEdition().getId();
         this.studentId = application.getStudent().getId();
+        this.studentName = application.getStudent().getFirstName()+","+application.getStudent().getLastName();
     }
 
-    public Application toApplication(){
+    public Application toApplication() {
         Application appl = new Application();
         appl.setId(this.getId());
         appl.setComments(this.getComments());
@@ -44,7 +46,7 @@ public class ApplicationDto {
     private ProcessingState applicationState;
     private long editionId;
     private long studentId;
-
+    private String studentName;
 
     public long getId() {
         return id;
@@ -92,5 +94,13 @@ public class ApplicationDto {
 
     public void setStudentId(long studentId) {
         this.studentId = studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }
