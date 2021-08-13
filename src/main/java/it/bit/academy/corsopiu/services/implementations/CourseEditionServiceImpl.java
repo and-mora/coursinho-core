@@ -21,20 +21,22 @@ public class CourseEditionServiceImpl implements CourseEditionService {
     private PersonRepository personRepo;
     private ModuleRepository moduleRepo;
     private ClassroomRepository classroomRepo;
+    private WeeklySessionRepository weeklySessionRepo;
 
     @Autowired
     public CourseEditionServiceImpl(CourseEditionRepository courseEditionRepo,
                                     CourseRepository courseRepo,
                                     PersonRepository personRepo,
                                     ModuleRepository moduleRepo,
-                                    ClassroomRepository classroomRepo) {
+                                    ClassroomRepository classroomRepo,
+                                    WeeklySessionRepository weeklySessionRepo) {
         this.courseEditionRepo = courseEditionRepo;
         this.courseRepo = courseRepo;
         this.personRepo = personRepo;
         this.moduleRepo = moduleRepo;
         this.classroomRepo = classroomRepo;
+        this.weeklySessionRepo = weeklySessionRepo;
     }
-
 
     @Override
     public Optional<CourseEdition> getCourseEditionById(long id) {
@@ -46,12 +48,29 @@ public class CourseEditionServiceImpl implements CourseEditionService {
         return this.moduleRepo.getByCouseEditionId(editionId);
     }
 
+    @Override
+    public Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException {
+        Optional<Course> opt = this.courseRepo.findById(id);
+
+        if (opt.isEmpty()) {
+            throw new EntityNotFoundException("course con id " + id + " non trovato");
+        }
+
+        return this.courseEditionRepo.findByCourse(opt.get());
+    }
+
+    @Override
+    public Collection<CourseEdition> getAllCoursesEditions() {
+        return this.courseEditionRepo.findAll();
+    }
+
+    @Override
+    public Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course) {
+        return this.courseEditionRepo.findFirstByCourseOrderByStartDateDesc(course);
+    }
+
     /**
      * Create a new edition course
-     *
-     * @param courseEdition
-     * @return
-     * @throws EntityNotFoundException
      */
     @Override
     public CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException {
@@ -77,24 +96,33 @@ public class CourseEditionServiceImpl implements CourseEditionService {
     }
 
     @Override
-    public Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException{
-        Optional<Course> opt = this.courseRepo.findById(id);
-
-        if(opt.isEmpty()) {
-            throw new EntityNotFoundException("course con id " + id + " non trovato");
+    public Module createModule(Module module) throws EntityNotFoundException {
+        Optional<Person> teacher = personRepo.findById(module.getTeacher().getId());
+        if (teacher.isEmpty()) {
+            throw new EntityNotFoundException("persona con id " + module.getTeacher().getId() + " non trovata");
         }
 
-        return this.courseEditionRepo.findByCourse(opt.get());
+        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(module.getEdition().getId());
+        if (courseEdition.isEmpty()) {
+            throw new EntityNotFoundException("edizione con id " + module.getEdition().getId() + " non trovata");
+        }
+
+        module.setTeacher(teacher.get());
+        module.setEdition(courseEdition.get());
+
+        return this.moduleRepo.save(module);
     }
 
     @Override
-    public Collection<CourseEdition> getAllCoursesEditions() {
-        return this.courseEditionRepo.findAll();
-    }
+    public WeeklySession createWeeklySession(WeeklySession weeklySession) throws EntityNotFoundException {
+        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(weeklySession.getEdition().getId());
+        if (courseEdition.isEmpty()) {
+            throw new EntityNotFoundException("edizione con id " + weeklySession.getEdition().getId() + " non trovata");
+        }
 
-    @Override
-    public Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course) {
-        return this.courseEditionRepo.findFirstByCourseOrderByStartDateDesc(course);
+        weeklySession.setEdition(courseEdition.get());
+
+        return this.weeklySessionRepo.save(weeklySession);
     }
 
     @Override

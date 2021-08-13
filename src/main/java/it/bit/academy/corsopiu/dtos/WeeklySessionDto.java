@@ -8,32 +8,36 @@ import java.time.LocalTime;
 
 public class WeeklySessionDto {
 
-    public WeeklySessionDto(WeeklySession session){
+    public WeeklySessionDto() {
+    }
+
+    public WeeklySessionDto(WeeklySession session) {
         this.id = session.getId();
         this.day = session.getDay();
-        this.start = session.getStart();
-        this.end = session.getEnd();
+        this.start = session.getStart().toString();
+        this.end = session.getEnd().toString();
         this.editionId = session.getEdition().getId();
     }
 
-    public WeeklySession toWeeklySession(){
+    public WeeklySession toWeeklySession() {
         WeeklySession session = new WeeklySession();
         session.setId(this.getId());
         session.setDay(this.getDay());
-        session.setStart(this.getStart());
-        session.setEnd(this.getEnd());
+        // parse da string a localTime
+        session.setStart(LocalTime.parse(this.getStart()));
+        session.setEnd(LocalTime.parse(this.getEnd()));
 
         CourseEdition ce = new CourseEdition();
         ce.setId(this.getEditionId());
         session.setEdition(ce);
 
-        return  session;
+        return session;
     }
 
     private long id;
     private DayWeek day;
-    private LocalTime start;
-    private LocalTime end;
+    private String start;
+    private String end;
     private long editionId;
 
     public long getId() {
@@ -52,19 +56,19 @@ public class WeeklySessionDto {
         this.day = day;
     }
 
-    public LocalTime getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(LocalTime start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public LocalTime getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(LocalTime end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

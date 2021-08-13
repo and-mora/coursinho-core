@@ -33,7 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Collection<Application> getApplicationsByEdition(long editionId) throws EntityNotFoundException {
+    public Collection<Application> getByEdition(long editionId) throws EntityNotFoundException {
         Optional<CourseEdition> opt = this.courseEditionRepo.findById(editionId);
 
         if (opt.isEmpty()) {
@@ -41,6 +41,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return this.applicationRepo.findByEdition(opt.get());
+    }
+
+    @Override
+    public Collection<Application> getByStudent(long studentId) throws EntityNotFoundException {
+        Optional<Student> opt = this.studentRepo.findById(studentId);
+
+        if (opt.isEmpty()) {
+            throw new EntityNotFoundException("studente con id " + studentId + " non trovato.");
+        }
+
+        return this.applicationRepo.findByStudent(opt.get());
     }
 
     @Override

@@ -7,7 +7,9 @@ import java.util.Collection;
 
 public interface ApplicationService {
 
-    Collection<Application> getApplicationsByEdition(long editionId) throws EntityNotFoundException;
+    Collection<Application> getByEdition(long editionId) throws EntityNotFoundException;
+
+    Collection<Application> getByStudent(long studentId) throws EntityNotFoundException;
 
     Application save(Application application) throws EntityNotFoundException;
 }

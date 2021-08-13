@@ -24,11 +24,22 @@ public class ApplicationController {
         this.applicationService = applicationService;
     }
 
-    @GetMapping("/edition/{editionId}")
-    public ResponseEntity<Collection<ApplicationDto>> getApplicationsByEdition(@PathVariable long editionId) {
-        Collection<Application> apps = null;
+    @GetMapping("/{select}/{id}")
+    public ResponseEntity<Collection<ApplicationDto>> getBySelect(@PathVariable String select, @PathVariable long id) {
+        Collection<Application> apps;
+
         try {
-            apps = this.applicationService.getApplicationsByEdition(editionId);
+            switch (select){
+                case "student":
+                    apps = this.applicationService.getByStudent(id);
+                    break;
+                case "edition":
+                    apps = this.applicationService.getByEdition(id);
+                    break;
+                default:
+                    return ResponseEntity.badRequest().build();
+
+            }
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
