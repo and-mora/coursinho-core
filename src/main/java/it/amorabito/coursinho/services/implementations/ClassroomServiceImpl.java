@@ -1,8 +1,8 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.entities.Classroom;
-import it.amorabito.coursinho.entities.RealClassroom;
-import it.amorabito.coursinho.entities.VirtualClassroom;
+import it.amorabito.coursinho.model.entities.Classroom;
+import it.amorabito.coursinho.model.entities.RealClassroom;
+import it.amorabito.coursinho.model.entities.VirtualClassroom;
 import it.amorabito.coursinho.repositories.ClassroomRepository;
 import it.amorabito.coursinho.repositories.RealClassroomRepository;
 import it.amorabito.coursinho.repositories.VirtualClassroomRepository;

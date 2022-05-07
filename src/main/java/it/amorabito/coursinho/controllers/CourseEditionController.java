@@ -1,11 +1,11 @@
 package it.amorabito.coursinho.controllers;
 
-import it.amorabito.coursinho.dtos.CourseEditionDto;
-import it.amorabito.coursinho.dtos.ModuleDto;
-import it.amorabito.coursinho.dtos.WeeklySessionDto;
-import it.amorabito.coursinho.entities.CourseEdition;
-import it.amorabito.coursinho.entities.Module;
-import it.amorabito.coursinho.entities.WeeklySession;
+import it.amorabito.coursinho.model.dtos.CourseEditionDto;
+import it.amorabito.coursinho.model.dtos.ModuleDto;
+import it.amorabito.coursinho.model.dtos.WeeklySessionDto;
+import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.model.entities.Module;
+import it.amorabito.coursinho.model.entities.WeeklySession;
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package it.amorabito.coursinho.services.abstractions;
 
-import it.amorabito.coursinho.dtos.CategoryData;
-import it.amorabito.coursinho.entities.Course;
+import it.amorabito.coursinho.model.dtos.CategoryData;
+import it.amorabito.coursinho.model.entities.Course;
 
 import java.util.Collection;
 import java.util.Optional;

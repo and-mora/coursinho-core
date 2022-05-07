@@ -1,8 +1,8 @@
 package it.amorabito.coursinho.controllers;
 
-import it.amorabito.coursinho.dtos.PersonDto;
-import it.amorabito.coursinho.entities.Person;
-import it.amorabito.coursinho.entities.Student;
+import it.amorabito.coursinho.model.dtos.PersonDto;
+import it.amorabito.coursinho.model.entities.Person;
+import it.amorabito.coursinho.model.entities.Student;
 import it.amorabito.coursinho.services.abstractions.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

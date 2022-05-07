@@ -1,7 +1,7 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.dtos.CategoryData;
-import it.amorabito.coursinho.entities.Course;
+import it.amorabito.coursinho.model.dtos.CategoryData;
+import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.repositories.CourseEditionRepository;
 import it.amorabito.coursinho.repositories.CourseRepository;
 import it.amorabito.coursinho.services.abstractions.CourseService;

@@ -1,8 +1,8 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.entities.Application;
-import it.amorabito.coursinho.entities.CourseEdition;
-import it.amorabito.coursinho.entities.Student;
+import it.amorabito.coursinho.model.entities.Application;
+import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.model.entities.Student;
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.repositories.ApplicationRepository;
 import it.amorabito.coursinho.repositories.CourseEditionRepository;
