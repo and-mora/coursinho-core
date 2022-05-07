@@ -1,12 +1,15 @@
 package it.amorabito.coursinho.controllers;
 
+import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.model.dtos.CourseEditionDto;
 import it.amorabito.coursinho.model.dtos.ModuleDto;
 import it.amorabito.coursinho.model.dtos.WeeklySessionDto;
 import it.amorabito.coursinho.model.entities.CourseEdition;
 import it.amorabito.coursinho.model.entities.Module;
 import it.amorabito.coursinho.model.entities.WeeklySession;
-import it.amorabito.coursinho.exceptions.EntityNotFoundException;
+import it.amorabito.coursinho.model.mapper.CourseEditionMapper;
+import it.amorabito.coursinho.model.mapper.ModuleMapper;
+import it.amorabito.coursinho.model.mapper.WeeklySessionMapper;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/course-edition")
@@ -25,19 +26,30 @@ public class CourseEditionController {
 
     private CourseEditionService courseEditionService;
 
+    private CourseEditionMapper courseEditionMapper;
+
+    private ModuleMapper moduleMapper;
+
+    private WeeklySessionMapper weeklySessionMapper;
+
     @Autowired
-    public CourseEditionController(CourseEditionService courseEditionService) {
+    public CourseEditionController(CourseEditionService courseEditionService,
+                                   CourseEditionMapper courseEditionMapper,
+                                   ModuleMapper moduleMapper,
+                                   WeeklySessionMapper weeklySessionMapper) {
         this.courseEditionService = courseEditionService;
+        this.courseEditionMapper = courseEditionMapper;
+        this.moduleMapper = moduleMapper;
+        this.weeklySessionMapper = weeklySessionMapper;
     }
 
     /**
      * Get all Course Edition
-     *
      */
     @GetMapping("/")
     public ResponseEntity<Collection<CourseEditionDto>> getAllCoursesEditions() {
         Collection<CourseEdition> listCourseEdition = courseEditionService.getAllCoursesEditions();
-        List<CourseEditionDto> result = listCourseEdition.stream().map(CourseEditionDto::new).collect(Collectors.toList());
+        Collection<CourseEditionDto> result = courseEditionMapper.toDtoList(listCourseEdition);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -48,7 +60,7 @@ public class CourseEditionController {
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new CourseEditionDto(opt.get()), HttpStatus.OK);
+        return new ResponseEntity<>(courseEditionMapper.toDto(opt.get()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/modules")
@@ -56,7 +68,7 @@ public class CourseEditionController {
         // retrieve data
         Collection<Module> list = this.courseEditionService.getModuleByCourseEditionId(id);
         // conversion from entity to dto
-        List<ModuleDto> result = list.stream().map(ModuleDto::new).collect(Collectors.toList());
+        Collection<ModuleDto> result = moduleMapper.toDtoList(list);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -74,17 +86,16 @@ public class CourseEditionController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<CourseEditionDto> result = editions.stream().map(CourseEditionDto::new).collect(Collectors.toList());
+        Collection<CourseEditionDto> result = courseEditionMapper.toDtoList(editions);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**
      * Create a new Course Edition
-     *
      */
     @PostMapping("/")
     public ResponseEntity<CourseEditionDto> createCourseEdition(@RequestBody CourseEditionDto courseEditionDto) {
-        CourseEdition courseEdition = courseEditionDto.toCourseEdition();
+        CourseEdition courseEdition = courseEditionMapper.toEntity(courseEditionDto);
         CourseEdition saved;
 
         try {
@@ -92,13 +103,13 @@ public class CourseEditionController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        CourseEditionDto saveDto = new CourseEditionDto(saved);
+        CourseEditionDto saveDto = courseEditionMapper.toDto(saved);
         return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/module")
     public ResponseEntity<ModuleDto> createModule(@RequestBody ModuleDto dto) {
-        Module module = dto.toModule();
+        Module module = moduleMapper.toEntity(dto);
         Module saved;
 
         try {
@@ -106,13 +117,13 @@ public class CourseEditionController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ModuleDto saveDto = new ModuleDto(saved);
+        ModuleDto saveDto = moduleMapper.toDto(saved);
         return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/weekly-session")
     public ResponseEntity<WeeklySessionDto> createWeeklySession(@RequestBody WeeklySessionDto dto) {
-        WeeklySession ws = dto.toWeeklySession();
+        WeeklySession ws = weeklySessionMapper.toEntity(dto);
         WeeklySession saved;
 
         try {
@@ -120,7 +131,7 @@ public class CourseEditionController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        WeeklySessionDto saveDto = new WeeklySessionDto(saved);
+        WeeklySessionDto saveDto = weeklySessionMapper.toDto(saved);
         return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
     }
 
@@ -144,12 +155,11 @@ public class CourseEditionController {
 
     /**
      * Update the course edition
-     *
      */
     @PutMapping("/")
     public ResponseEntity<CourseEditionDto> updateCourseEdition(@RequestBody CourseEditionDto courseEditionDto) {
 
-        CourseEdition courseEdition = courseEditionDto.toCourseEdition();
+        CourseEdition courseEdition = courseEditionMapper.toEntity(courseEditionDto);
         CourseEdition saved = null;
         try {
             saved = courseEditionService.createCourseEdition(courseEdition);
@@ -157,8 +167,8 @@ public class CourseEditionController {
             e.printStackTrace();
         }
 
-        if(saved != null) {
-            CourseEditionDto saveDto = new CourseEditionDto(saved);
+        if (saved != null) {
+            CourseEditionDto saveDto = courseEditionMapper.toDto(saved);
             return new ResponseEntity<>(saveDto, HttpStatus.OK);
         }
 

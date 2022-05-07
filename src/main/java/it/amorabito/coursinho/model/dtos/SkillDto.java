@@ -1,44 +1,8 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.*;
+import it.amorabito.coursinho.model.entities.Level;
 
 public class SkillDto {
-
-    public SkillDto(Skill skill){
-
-        this.abilityId = skill.getAbility().getId();
-        this.abilityName = skill.getAbility().getName();
-        this.abilityDescription = skill.getAbility().getDescription();
-        this.areaId = skill.getAbility().getArea().getId();
-        this.areaName = skill.getAbility().getArea().getName();
-        this.areaDescription = skill.getAbility().getArea().getDescription();
-        this.id = skill.getId();
-        this.level = skill.getLevel();
-        this.certified = skill.isCertified();
-        this.personId = skill.getPerson().getId();
-
-    }
-
-    public Skill toSkill(){
-        Skill skill = new Skill();
-        skill.setId(this.getId());
-        skill.setLevel(this.getLevel());
-        skill.setCertified(this.isCertified());
-
-        Ability ability = new Ability();
-        ability.setId(this.getAbilityId());
-        skill.setAbility(ability);
-
-        Ability area = new Ability();
-        area.setId(this.getAreaId());
-        skill.setAbility(area);
-
-        Person employee = new Employee();
-        employee.setId(this.getPersonId());
-        skill.setPerson(employee);
-
-        return skill;
-    }
 
     private long abilityId;
     private String abilityName;

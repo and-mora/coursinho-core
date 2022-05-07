@@ -1,13 +1,10 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.Course;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class CourseDto {
-    
+
     private long id;
     private String name;
     private int duration;
@@ -16,33 +13,6 @@ public class CourseDto {
     private boolean certification;
     private String category;
     private List<CourseEditionDto> editions;
-
-    CourseDto() {
-    }
-
-    public CourseDto(Course course) {
-        this.id = course.getId();
-        this.name = course.getName();
-        this.duration = course.getDuration();
-        this.price = course.getPrice();
-        this.program = course.getProgram();
-        this.certification = course.isCertification();
-        this.category = course.getCategory();
-        this.editions = course.getEditions().stream().map(CourseEditionDto::new).collect(Collectors.toList());
-    }
-
-    public Course toCourse() {
-        Course course = new Course();
-        course.setId(this.getId());
-        course.setName(this.getName());
-        course.setDuration(this.getDuration());
-        course.setPrice(this.getPrice());
-        course.setProgram(this.getProgram());
-        course.setCertification(this.isCertification());
-        course.setCategory(this.getCategory());
-        course.setEditions(new ArrayList<>());
-        return course;
-    }
 
     public long getId() {
         return id;

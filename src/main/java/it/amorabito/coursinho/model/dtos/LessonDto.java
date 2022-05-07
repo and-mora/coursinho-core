@@ -1,52 +1,8 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.Classroom;
-import it.amorabito.coursinho.model.entities.Lesson;
-import it.amorabito.coursinho.model.entities.Module;
-import it.amorabito.coursinho.model.entities.RealClassroom;
-import it.amorabito.coursinho.model.entities.Teacher;
-
 import java.time.LocalDateTime;
 
 public class LessonDto {
-
-    public LessonDto() {
-    }
-
-    public LessonDto(Lesson l) {
-        this.id = l.getId();
-        this.subject = l.getSubject();
-        this.start = l.getStart();
-        this.end = l.getEnd();
-        this.teacherId = l.getTeacher().getId();
-        this.teacherName = l.getTeacher().getFirstName() + "," + l.getTeacher().getLastName();
-        this.classroomId = l.getClassroom().getId();
-        this.classroomName = l.getClassroom().getName();
-        this.moduleId = l.getModule().getId();
-    }
-
-    public Lesson toLesson() {
-        Lesson lesson = new Lesson();
-
-        lesson.setId(this.getId());
-        lesson.setSubject(this.getSubject());
-        lesson.setStart(this.getStart());
-        lesson.setEnd(this.getEnd());
-
-        Teacher teacher = new Teacher();
-        teacher.setId(this.getTeacherId());
-        teacher.setFirstName(this.getTeacherName());
-
-        Classroom classroom = new RealClassroom();
-        classroom.setId(this.getClassroomId());
-        lesson.setClassroom(classroom);
-
-        Module module = new Module();
-        module.setId(this.getId());
-        lesson.setModule(module);
-
-        return lesson;
-    }
 
     private long id;
     private String subject;
