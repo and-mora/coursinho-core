@@ -1,8 +1,8 @@
 package it.amorabito.coursinho.repositories;
 
-import it.amorabito.coursinho.dtos.CategoryData;
-import it.amorabito.coursinho.entities.Course;
-import it.amorabito.coursinho.entities.CourseEdition;
+import it.amorabito.coursinho.model.dtos.CategoryData;
+import it.amorabito.coursinho.model.entities.Course;
+import it.amorabito.coursinho.model.entities.CourseEdition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

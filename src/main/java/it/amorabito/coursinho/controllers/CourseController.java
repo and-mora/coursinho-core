@@ -1,9 +1,9 @@
 package it.amorabito.coursinho.controllers;
 
-import it.amorabito.coursinho.dtos.CourseDto;
-import it.amorabito.coursinho.dtos.CourseEditionPresentation;
-import it.amorabito.coursinho.entities.Course;
-import it.amorabito.coursinho.entities.CourseEdition;
+import it.amorabito.coursinho.model.dtos.CourseDto;
+import it.amorabito.coursinho.model.dtos.CourseEditionPresentation;
+import it.amorabito.coursinho.model.entities.Course;
+import it.amorabito.coursinho.model.entities.CourseEdition;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import it.amorabito.coursinho.services.abstractions.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;

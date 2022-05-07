@@ -1,10 +1,10 @@
 package it.amorabito.coursinho.services.abstractions;
 
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
-import it.amorabito.coursinho.entities.Course;
-import it.amorabito.coursinho.entities.CourseEdition;
-import it.amorabito.coursinho.entities.Module;
-import it.amorabito.coursinho.entities.WeeklySession;
+import it.amorabito.coursinho.model.entities.Course;
+import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.model.entities.Module;
+import it.amorabito.coursinho.model.entities.WeeklySession;
 
 import java.util.Collection;
 import java.util.Optional;

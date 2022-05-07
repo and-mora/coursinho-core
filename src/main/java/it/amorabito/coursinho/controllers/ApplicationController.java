@@ -1,7 +1,7 @@
 package it.amorabito.coursinho.controllers;
 
-import it.amorabito.coursinho.dtos.ApplicationDto;
-import it.amorabito.coursinho.entities.Application;
+import it.amorabito.coursinho.model.dtos.ApplicationDto;
+import it.amorabito.coursinho.model.entities.Application;
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.services.abstractions.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;

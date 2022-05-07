@@ -1,6 +1,6 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.entities.Course;
+import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.services.abstractions.CourseService;
 import it.amorabito.coursinho.repositories.CourseRepository;
 import org.junit.jupiter.api.Test;

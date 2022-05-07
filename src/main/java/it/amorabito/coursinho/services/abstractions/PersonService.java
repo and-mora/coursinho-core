@@ -1,9 +1,9 @@
 package it.amorabito.coursinho.services.abstractions;
 
-import it.amorabito.coursinho.entities.Employee;
-import it.amorabito.coursinho.entities.Person;
-import it.amorabito.coursinho.entities.Student;
-import it.amorabito.coursinho.entities.Teacher;
+import it.amorabito.coursinho.model.entities.Employee;
+import it.amorabito.coursinho.model.entities.Person;
+import it.amorabito.coursinho.model.entities.Student;
+import it.amorabito.coursinho.model.entities.Teacher;
 
 import java.util.Collection;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package it.amorabito.coursinho.services.abstractions;
 
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
-import it.amorabito.coursinho.entities.Application;
+import it.amorabito.coursinho.model.entities.Application;
 
 import java.util.Collection;
 

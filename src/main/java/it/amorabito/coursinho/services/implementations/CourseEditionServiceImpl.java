@@ -1,12 +1,14 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.entities.*;
-import it.amorabito.coursinho.entities.Module;
+import it.amorabito.coursinho.model.entities.Classroom;
+import it.amorabito.coursinho.model.entities.Course;
+import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.model.entities.Module;
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
+import it.amorabito.coursinho.model.entities.Person;
+import it.amorabito.coursinho.model.entities.WeeklySession;
 import it.amorabito.coursinho.repositories.*;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
-import it.bit.academy.corsopiu.entities.*;
-import it.bit.academy.corsopiu.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
