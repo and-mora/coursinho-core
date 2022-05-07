@@ -7,7 +7,7 @@ import it.amorabito.coursinho.repositories.ClassroomRepository;
 import it.amorabito.coursinho.repositories.RealClassroomRepository;
 import it.amorabito.coursinho.repositories.VirtualClassroomRepository;
 import it.amorabito.coursinho.services.abstractions.ClassroomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,20 +16,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ClassroomServiceImpl implements ClassroomService {
 
-    private ClassroomRepository classroomRepo;
-    private RealClassroomRepository realClassroomRepo;
-    private VirtualClassroomRepository virtualClassroomRepo;
-
-    @Autowired
-    public ClassroomServiceImpl(ClassroomRepository classroomRepo,
-                                RealClassroomRepository realClassroomRepo,
-                                VirtualClassroomRepository virtualClassroomRepo) {
-        this.classroomRepo = classroomRepo;
-        this.realClassroomRepo = realClassroomRepo;
-        this.virtualClassroomRepo = virtualClassroomRepo;
-    }
+    private final ClassroomRepository classroomRepo;
+    private final RealClassroomRepository realClassroomRepo;
+    private final VirtualClassroomRepository virtualClassroomRepo;
 
     @Override
     public Collection<Classroom> getAllClassrooms() {

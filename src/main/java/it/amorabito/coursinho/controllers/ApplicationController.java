@@ -5,7 +5,7 @@ import it.amorabito.coursinho.model.dtos.ApplicationDto;
 import it.amorabito.coursinho.model.entities.Application;
 import it.amorabito.coursinho.model.mapper.ApplicationMapper;
 import it.amorabito.coursinho.services.abstractions.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,11 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/api/application")
 @CrossOrigin
+@RequiredArgsConstructor
 public class ApplicationController {
 
-    private ApplicationService applicationService;
-
-    private ApplicationMapper applicationMapper;
-
-    @Autowired
-    public ApplicationController(ApplicationService applicationService, ApplicationMapper applicationMapper) {
-        this.applicationService = applicationService;
-        this.applicationMapper = applicationMapper;
-    }
+    private final ApplicationService applicationService;
+    private final ApplicationMapper applicationMapper;
 
     @GetMapping("/{select}/{id}")
     public ResponseEntity<Collection<ApplicationDto>> getBySelect(@PathVariable String select, @PathVariable long id) {

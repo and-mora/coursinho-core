@@ -11,7 +11,7 @@ import it.amorabito.coursinho.model.mapper.CourseEditionMapper;
 import it.amorabito.coursinho.model.mapper.ModuleMapper;
 import it.amorabito.coursinho.model.mapper.WeeklySessionMapper;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,26 +22,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/course-edition")
 @CrossOrigin
+@RequiredArgsConstructor
 public class CourseEditionController {
 
-    private CourseEditionService courseEditionService;
-
-    private CourseEditionMapper courseEditionMapper;
-
-    private ModuleMapper moduleMapper;
-
-    private WeeklySessionMapper weeklySessionMapper;
-
-    @Autowired
-    public CourseEditionController(CourseEditionService courseEditionService,
-                                   CourseEditionMapper courseEditionMapper,
-                                   ModuleMapper moduleMapper,
-                                   WeeklySessionMapper weeklySessionMapper) {
-        this.courseEditionService = courseEditionService;
-        this.courseEditionMapper = courseEditionMapper;
-        this.moduleMapper = moduleMapper;
-        this.weeklySessionMapper = weeklySessionMapper;
-    }
+    private final CourseEditionService courseEditionService;
+    private final CourseEditionMapper courseEditionMapper;
+    private final ModuleMapper moduleMapper;
+    private final WeeklySessionMapper weeklySessionMapper;
 
     /**
      * Get all Course Edition

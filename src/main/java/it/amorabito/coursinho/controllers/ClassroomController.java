@@ -3,7 +3,7 @@ package it.amorabito.coursinho.controllers;
 import it.amorabito.coursinho.model.dtos.ClassroomDto;
 import it.amorabito.coursinho.model.entities.Classroom;
 import it.amorabito.coursinho.services.abstractions.ClassroomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/classroom")
 @CrossOrigin
+@RequiredArgsConstructor
 public class ClassroomController {
 
-    private ClassroomService classroomService;
-
-    @Autowired
-    public ClassroomController(ClassroomService classroomService) {
-        this.classroomService = classroomService;
-    }
+    private final ClassroomService classroomService;
 
     @GetMapping("/")
     public ResponseEntity<Collection<ClassroomDto>> getAllClassrooms() {

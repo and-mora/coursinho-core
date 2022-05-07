@@ -9,7 +9,7 @@ import it.amorabito.coursinho.repositories.PersonRepository;
 import it.amorabito.coursinho.repositories.StudentRepository;
 import it.amorabito.coursinho.repositories.TeacherRepository;
 import it.amorabito.coursinho.services.abstractions.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,23 +18,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    private PersonRepository personRepo;
-    private TeacherRepository teacherRepo;
-    private EmployeeRepository employeeRepo;
-    private StudentRepository studentRepo;
-
-    @Autowired
-    public PersonServiceImpl(PersonRepository personRepository,
-                             TeacherRepository teacherRepo,
-                             EmployeeRepository employeeRepo,
-                             StudentRepository studentRepo) {
-        this.personRepo = personRepository;
-        this.teacherRepo = teacherRepo;
-        this.employeeRepo = employeeRepo;
-        this.studentRepo = studentRepo;
-    }
+    private final PersonRepository personRepo;
+    private final TeacherRepository teacherRepo;
+    private final EmployeeRepository employeeRepo;
+    private final StudentRepository studentRepo;
 
     @Override
     public Collection<Person> getPersons() {

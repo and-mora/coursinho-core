@@ -8,7 +8,7 @@ import it.amorabito.coursinho.repositories.ApplicationRepository;
 import it.amorabito.coursinho.repositories.CourseEditionRepository;
 import it.amorabito.coursinho.repositories.StudentRepository;
 import it.amorabito.coursinho.services.abstractions.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,20 +17,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private ApplicationRepository applicationRepo;
-    private CourseEditionRepository courseEditionRepo;
-    private StudentRepository studentRepo;
-
-    @Autowired
-    public ApplicationServiceImpl(ApplicationRepository applicationRepo,
-                                  CourseEditionRepository courseEditionRepo,
-                                  StudentRepository studentRepo) {
-        this.applicationRepo = applicationRepo;
-        this.courseEditionRepo = courseEditionRepo;
-        this.studentRepo = studentRepo;
-    }
+    private final ApplicationRepository applicationRepo;
+    private final CourseEditionRepository courseEditionRepo;
+    private final StudentRepository studentRepo;
 
     @Override
     public Collection<Application> getByEdition(long editionId) throws EntityNotFoundException {

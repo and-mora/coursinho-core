@@ -5,7 +5,7 @@ import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.repositories.CourseEditionRepository;
 import it.amorabito.coursinho.repositories.CourseRepository;
 import it.amorabito.coursinho.services.abstractions.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,17 +14,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    private CourseRepository courseRepo;
-    private CourseEditionRepository courseEditionRepo;
-
-    @Autowired
-    public CourseServiceImpl(CourseRepository courseRepo,
-                             CourseEditionRepository courseEditionRepo) {
-        this.courseRepo = courseRepo;
-        this.courseEditionRepo = courseEditionRepo;
-    }
+    private final CourseRepository courseRepo;
+    private final CourseEditionRepository courseEditionRepo;
 
     /**
      * Get a collection of courses
