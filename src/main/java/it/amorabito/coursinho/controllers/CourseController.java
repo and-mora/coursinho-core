@@ -7,7 +7,7 @@ import it.amorabito.coursinho.model.entities.CourseEdition;
 import it.amorabito.coursinho.model.mapper.CourseMapper;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import it.amorabito.coursinho.services.abstractions.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +17,12 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/course")
 @CrossOrigin
+@RequiredArgsConstructor
 public class CourseController {
 
-    private CourseService courseService;
-    private CourseEditionService courseEditionService;
-
-    private CourseMapper courseMapper;
-
-    @Autowired
-    public CourseController(CourseService courseService,
-                            CourseEditionService courseEditionService,
-                            CourseMapper courseMapper) {
-        this.courseService = courseService;
-        this.courseEditionService = courseEditionService;
-        this.courseMapper = courseMapper;
-    }
+    private final CourseService courseService;
+    private final CourseEditionService courseEditionService;
+    private final CourseMapper courseMapper;
 
     /**
      * Get a collection of courses

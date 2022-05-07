@@ -4,7 +4,7 @@ import it.amorabito.coursinho.model.dtos.PersonDto;
 import it.amorabito.coursinho.model.entities.Person;
 import it.amorabito.coursinho.model.entities.Student;
 import it.amorabito.coursinho.services.abstractions.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +17,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/person")
 @CrossOrigin
+@RequiredArgsConstructor
 public class PersonController {
 
-    private PersonService personService;
-
-    @Autowired
-    PersonController(PersonService personService) {
-        this.personService = personService;
-    }
+    private final PersonService personService;
 
     /**
      * Gets all persons
@@ -55,6 +51,7 @@ public class PersonController {
 
     /**
      * Get all students containing string param in firstName, lastName or fiscalCode.
+     *
      * @param contains
      * @return
      */
@@ -63,7 +60,7 @@ public class PersonController {
 
         Collection<Student> students;
 
-        if(contains.isEmpty()) {
+        if (contains.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

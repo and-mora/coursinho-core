@@ -9,7 +9,7 @@ import it.amorabito.coursinho.model.entities.Person;
 import it.amorabito.coursinho.model.entities.WeeklySession;
 import it.amorabito.coursinho.repositories.*;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,29 +18,15 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CourseEditionServiceImpl implements CourseEditionService {
 
-    private CourseEditionRepository courseEditionRepo;
-    private CourseRepository courseRepo;
-    private PersonRepository personRepo;
-    private ModuleRepository moduleRepo;
-    private ClassroomRepository classroomRepo;
-    private WeeklySessionRepository weeklySessionRepo;
-
-    @Autowired
-    public CourseEditionServiceImpl(CourseEditionRepository courseEditionRepo,
-                                    CourseRepository courseRepo,
-                                    PersonRepository personRepo,
-                                    ModuleRepository moduleRepo,
-                                    ClassroomRepository classroomRepo,
-                                    WeeklySessionRepository weeklySessionRepo) {
-        this.courseEditionRepo = courseEditionRepo;
-        this.courseRepo = courseRepo;
-        this.personRepo = personRepo;
-        this.moduleRepo = moduleRepo;
-        this.classroomRepo = classroomRepo;
-        this.weeklySessionRepo = weeklySessionRepo;
-    }
+    private final CourseEditionRepository courseEditionRepo;
+    private final CourseRepository courseRepo;
+    private final PersonRepository personRepo;
+    private final ModuleRepository moduleRepo;
+    private final ClassroomRepository classroomRepo;
+    private final WeeklySessionRepository weeklySessionRepo;
 
     @Override
     public Optional<CourseEdition> getCourseEditionById(long id) {
