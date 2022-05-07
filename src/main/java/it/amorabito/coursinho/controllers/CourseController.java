@@ -4,6 +4,7 @@ import it.amorabito.coursinho.model.dtos.CourseDto;
 import it.amorabito.coursinho.model.dtos.CourseEditionPresentation;
 import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.model.mapper.CourseMapper;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import it.amorabito.coursinho.services.abstractions.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/course")
@@ -22,11 +22,15 @@ public class CourseController {
     private CourseService courseService;
     private CourseEditionService courseEditionService;
 
+    private CourseMapper courseMapper;
+
     @Autowired
     public CourseController(CourseService courseService,
-                            CourseEditionService courseEditionService) {
+                            CourseEditionService courseEditionService,
+                            CourseMapper courseMapper) {
         this.courseService = courseService;
         this.courseEditionService = courseEditionService;
+        this.courseMapper = courseMapper;
     }
 
     /**
@@ -39,7 +43,7 @@ public class CourseController {
         // recuperiamo l'elenco dei corsi dal service
         Collection<Course> listaCorsi = courseService.getCourses();
         // conversione da entity a dto
-        List<CourseDto> result = listaCorsi.stream().map(CourseDto::new).collect(Collectors.toList());
+        Collection<CourseDto> result = courseMapper.toDtoList(listaCorsi);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -71,6 +75,7 @@ public class CourseController {
 
     /**
      * Get courses with edition and filter on price if priceRange is present
+     *
      * @param priceRange
      * @return
      */
@@ -123,7 +128,7 @@ public class CourseController {
         if (opt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new CourseDto(opt.get()), HttpStatus.OK);
+        return new ResponseEntity<>(courseMapper.toDto(opt.get()), HttpStatus.OK);
     }
 
     /**
@@ -150,10 +155,9 @@ public class CourseController {
      */
     @PostMapping("/")
     public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto dto) {
-        Course course = dto.toCourse();
+        Course course = courseMapper.toEntity(dto);
         Course saved = courseService.saveCourse(course);
-        CourseDto saveDto = new CourseDto(saved);
-        return new ResponseEntity<>(saveDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(courseMapper.toDto(saved), HttpStatus.CREATED);
     }
 
     /**
@@ -167,9 +171,8 @@ public class CourseController {
         Optional<Course> newCourse = courseService.getCourseById(courseDto.getId());
         if (newCourse.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        Course course = courseDto.toCourse();
+        Course course = courseMapper.toEntity(courseDto);
         Course saved = courseService.saveCourse(course);
-        CourseDto saveDto = new CourseDto(saved);
-        return new ResponseEntity<>(saveDto, HttpStatus.OK);
+        return new ResponseEntity<>(courseMapper.toDto(saved), HttpStatus.OK);
     }
 }

@@ -1,42 +1,6 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.model.entities.Teacher;
-import it.amorabito.coursinho.model.entities.Module;
-
 public class ModuleDto {
-
-    public ModuleDto() {
-    }
-
-    public ModuleDto(Module module) {
-        this.id = module.getId();
-        this.name = module.getName();
-        this.description = module.getDescription();
-        this.teacherId = module.getTeacher().getId();
-        this.teacherName = module.getTeacher().getFirstName() + "," + module.getTeacher().getLastName();
-        this.duration = module.getDuration();
-        this.editionId = module.getEdition().getId();
-    }
-
-    public Module toModule() {
-        Module module = new Module();
-        module.setId(this.getId());
-        module.setName(this.getName());
-        module.setDescription(this.getDescription());
-        module.setDuration(this.getDuration());
-
-        Teacher t = new Teacher();
-        t.setId(this.getTeacherId());
-        module.setTeacher(t);
-
-        CourseEdition ce = new CourseEdition();
-        ce.setId(this.getEditionId());
-        module.setEdition(ce);
-
-        return module;
-    }
-
     private long id;
 
     private String name;

@@ -1,44 +1,10 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.Application;
-import it.amorabito.coursinho.model.entities.CourseEdition;
 import it.amorabito.coursinho.model.entities.ProcessingState;
-import it.amorabito.coursinho.model.entities.Student;
 
 import java.time.LocalDateTime;
 
 public class ApplicationDto {
-
-    public ApplicationDto() {
-    }
-
-    public ApplicationDto(Application application) {
-        this.id = application.getId();
-        this.comments = application.getComments();
-        this.applicationDate = application.getApplicationDate();
-        this.applicationState = application.getApplicationState();
-        this.editionId = application.getEdition().getId();
-        this.studentId = application.getStudent().getId();
-        this.studentName = application.getStudent().getFirstName()+","+application.getStudent().getLastName();
-    }
-
-    public Application toApplication() {
-        Application appl = new Application();
-        appl.setId(this.getId());
-        appl.setComments(this.getComments());
-        appl.setApplicationDate(this.getApplicationDate());
-        appl.setApplicationState(this.getApplicationState());
-
-        CourseEdition ce = new CourseEdition();
-        ce.setId(this.getEditionId());
-        appl.setEdition(ce);
-
-        Student st = new Student();
-        st.setId(this.getStudentId());
-        appl.setStudent(st);
-
-        return appl;
-    }
 
     private long id;
     private String comments;

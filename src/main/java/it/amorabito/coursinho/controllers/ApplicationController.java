@@ -1,8 +1,9 @@
 package it.amorabito.coursinho.controllers;
 
+import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.model.dtos.ApplicationDto;
 import it.amorabito.coursinho.model.entities.Application;
-import it.amorabito.coursinho.exceptions.EntityNotFoundException;
+import it.amorabito.coursinho.model.mapper.ApplicationMapper;
 import it.amorabito.coursinho.services.abstractions.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/application")
@@ -19,9 +19,12 @@ public class ApplicationController {
 
     private ApplicationService applicationService;
 
+    private ApplicationMapper applicationMapper;
+
     @Autowired
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(ApplicationService applicationService, ApplicationMapper applicationMapper) {
         this.applicationService = applicationService;
+        this.applicationMapper = applicationMapper;
     }
 
     @GetMapping("/{select}/{id}")
@@ -29,7 +32,7 @@ public class ApplicationController {
         Collection<Application> apps;
 
         try {
-            switch (select){
+            switch (select) {
                 case "student":
                     apps = this.applicationService.getByStudent(id);
                     break;
@@ -44,14 +47,14 @@ public class ApplicationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Collection<ApplicationDto> results = apps.stream().map(ApplicationDto::new).collect(Collectors.toList());
+        Collection<ApplicationDto> results = applicationMapper.toDtoList(apps);
 
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<ApplicationDto> saveApplication(@RequestBody ApplicationDto dto) {
-        Application appl = dto.toApplication();
+        Application appl = applicationMapper.toEntity(dto);
 
         try {
             this.applicationService.save(appl);
@@ -59,7 +62,7 @@ public class ApplicationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new ApplicationDto(appl), HttpStatus.CREATED);
+        return new ResponseEntity<>(applicationMapper.toDto(appl), HttpStatus.CREATED);
     }
 
 }

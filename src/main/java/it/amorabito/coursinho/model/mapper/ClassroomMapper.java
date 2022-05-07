@@ -4,8 +4,8 @@ import it.amorabito.coursinho.model.entities.Classroom;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface ClassroomDto {
-    Classroom toEntity(ClassroomDto classroomDto);
+public interface ClassroomMapper {
+    Classroom toEntity(ClassroomMapper classroomDto);
 
-    ClassroomDto toDto(Classroom classroom);
+    ClassroomMapper toDto(Classroom classroom);
 }

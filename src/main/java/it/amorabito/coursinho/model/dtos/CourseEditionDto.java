@@ -1,50 +1,8 @@
 package it.amorabito.coursinho.model.dtos;
 
-import it.amorabito.coursinho.model.entities.Classroom;
-import it.amorabito.coursinho.model.entities.Course;
-import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.model.entities.Employee;
-import it.amorabito.coursinho.model.entities.Person;
-import it.amorabito.coursinho.model.entities.RealClassroom;
-
 import java.time.LocalDate;
 
 public class CourseEditionDto {
-
-    public CourseEditionDto() {
-    }
-
-    public CourseEditionDto(CourseEdition ce) {
-        this.id = ce.getId();
-        this.startDate = ce.getStartDate();
-        this.classroomId = ce.getClassroom().getId();
-        this.classroomName = ce.getClassroom().getName();
-        this.description = ce.getDescription();
-        this.tutorId = ce.getTutor().getId();
-        this.tutorName = ce.getTutor().getFirstName() + "," + ce.getTutor().getLastName();
-        this.courseId = ce.getCourse().getId();
-    }
-
-    public CourseEdition toCourseEdition() {
-        CourseEdition courseEdition = new CourseEdition();
-        courseEdition.setId(this.getId());
-        courseEdition.setStartDate(this.getStartDate());
-        courseEdition.setDescription(this.getDescription());
-
-        Person person = new Employee();
-        person.setId(this.getTutorId());
-        courseEdition.setTutor(person);
-
-        Course course = new Course();
-        course.setId(this.getCourseId());
-        courseEdition.setCourse(course);
-
-        Classroom classroom = new RealClassroom();
-        classroom.setId(this.getClassroomId());
-        courseEdition.setClassroom(classroom);
-
-        return courseEdition;
-    }
 
     private long id;
 
