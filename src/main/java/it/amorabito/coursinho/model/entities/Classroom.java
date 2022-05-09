@@ -1,11 +1,16 @@
 package it.amorabito.coursinho.model.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "classroom_type")
 @Table(name = "classroom")
+@Getter
+@Setter
 public abstract class Classroom {
 
     @Id
@@ -19,36 +24,4 @@ public abstract class Classroom {
     public abstract boolean hasComputer();
 
     public abstract boolean hasProjectors();
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
 }

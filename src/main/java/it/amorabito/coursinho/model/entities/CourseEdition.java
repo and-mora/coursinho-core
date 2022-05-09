@@ -1,11 +1,16 @@
 package it.amorabito.coursinho.model.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "course_edition")
+@Getter
+@Setter
 public class CourseEdition {
 
     @Id
@@ -47,76 +52,4 @@ public class CourseEdition {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-
-    public long getId() {
-        return id;
-    }
-
-    public List<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Person getTutor() {
-        return tutor;
-    }
-
-    public void setTutor(Person tutor) {
-        this.tutor = tutor;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public Classroom getClassroom() {
-        return classroom;
-    }
-
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
-    }
-
-    public List<Module> getModules() {
-        return modules;
-    }
-
-    public void setModules(List<Module> modules) {
-        this.modules = modules;
-    }
-
-    public List<WeeklySession> getWeeklySessions() {
-        return weeklySessions;
-    }
-
-    public void setWeeklySessions(List<WeeklySession> weeklySessions) {
-        this.weeklySessions = weeklySessions;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
 }
