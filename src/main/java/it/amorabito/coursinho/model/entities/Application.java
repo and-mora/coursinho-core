@@ -1,10 +1,15 @@
 package it.amorabito.coursinho.model.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "application")
+@Getter
+@Setter
 public class Application {
 
     @Id
@@ -27,52 +32,4 @@ public class Application {
     @ManyToOne()
     @JoinColumn(name = "student_id")
     private Student student;
-
-    public String getComments() {
-        return comments;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public LocalDateTime getApplicationDate() {
-        return applicationDate;
-    }
-
-    public void setApplicationDate(LocalDateTime applicationDate) {
-        this.applicationDate = applicationDate;
-    }
-
-    public ProcessingState getApplicationState() {
-        return applicationState;
-    }
-
-    public void setApplicationState(ProcessingState applicationState) {
-        this.applicationState = applicationState;
-    }
-
-    public CourseEdition getEdition() {
-        return edition;
-    }
-
-    public void setEdition(CourseEdition edition) {
-        this.edition = edition;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
 }

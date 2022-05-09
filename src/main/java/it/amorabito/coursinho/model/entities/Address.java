@@ -1,9 +1,14 @@
 package it.amorabito.coursinho.model.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "address")
+@Getter
+@Setter
 public class Address {
 
     @Id
@@ -20,43 +25,4 @@ public class Address {
     @OneToOne
     @JoinColumn(name = "person_id")
     private Person person;
-
-    public Address(String streetAddress, String city, String province, Region region) {
-        this.streetAddress = streetAddress;
-        this.city = city;
-        this.province = province;
-        this.region = region;
-    }
-
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
 }

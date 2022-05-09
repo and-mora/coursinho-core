@@ -4,7 +4,11 @@ import it.amorabito.coursinho.model.entities.Classroom;
 import it.amorabito.coursinho.model.entities.Equipment;
 import it.amorabito.coursinho.model.entities.RealClassroom;
 import it.amorabito.coursinho.model.entities.VirtualClassroom;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ClassroomDto {
 
     public ClassroomDto(Classroom classroom) {
@@ -53,6 +57,7 @@ public class ClassroomDto {
         return classroom;
     }
 
+    @EqualsAndHashCode.Include
     private long id;
     private String name;
     private String title;
@@ -62,76 +67,4 @@ public class ClassroomDto {
     private String link;
     private String password;
     private Equipment equipment;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public ClassroomType getClassroomType() {
-        return classroomType;
-    }
-
-    public void setClassroomType(ClassroomType classroomType) {
-        this.classroomType = classroomType;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
 }

@@ -1,28 +1,15 @@
 package it.amorabito.coursinho.model.dtos;
 
-public class CategoryData {
+import lombok.Data;
 
-    public CategoryData(String name, long numCourses){
-        this.name = name;
-        this.numCourses = numCourses;
-    }
+@Data
+public class CategoryData {
 
     private String name;
     private long numCourses;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public CategoryData(String name, long numCourses) {
         this.name = name;
-    }
-
-    public long getNumCourses() {
-        return numCourses;
-    }
-
-    public void setNumCourses(long numCourses) {
         this.numCourses = numCourses;
     }
 }
