@@ -3,6 +3,7 @@ package it.amorabito.coursinho.repositories;
 import it.amorabito.coursinho.model.dtos.CategoryData;
 import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.model.entities.CourseEdition;
+import it.amorabito.coursinho.repositories.custom.CourseRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,9 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseRepository extends JpaRepository<Course, Long>, CourseRepositoryCustom {
 
-    @Query("select new it.bit.academy.corsopiu.dtos.CategoryData(c.category, count(*)) " +
+    @Query("select new it.amorabito.coursinho.model.dtos.CategoryData(c.category, count(*)) " +
             "from Course as c " +
             "group by c.category " +
             "order by count(*) desc")
@@ -30,14 +31,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("select distinct ce.course from CourseEdition as ce where ce.course.price >= :minPrice and ce.course.price <= :maxPrice")
     Collection<Course> findByCoursesWithEditionsByPrices(double minPrice, double maxPrice);
 
-    // DA TESTARE!
-//    @Query("select c from Course as c where c.category like :categoryLike ")
-//    Page<Collection<Course>> findByCategoryLikePaged(String categoryLike, Pageable pageable);
-
     Collection<Course> findByCategoryLike(String categoryLike);
-
-    // OBSOLETO
-//    Collection<Course> findByPriceGreaterThanEqualAndPriceLessThanEqual(double minPrice, double maxPrice);
 
     Optional<CourseEdition> findFirstByEditions(Course course);
 }

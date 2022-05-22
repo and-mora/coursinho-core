@@ -1,32 +1,32 @@
 package it.amorabito.coursinho.services.abstractions;
 
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
-import it.amorabito.coursinho.model.entities.Course;
-import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.model.entities.Module;
-import it.amorabito.coursinho.model.entities.WeeklySession;
+import it.amorabito.coursinho.model.dtos.CourseDto;
+import it.amorabito.coursinho.model.dtos.CourseEditionDto;
+import it.amorabito.coursinho.model.dtos.ModuleDto;
+import it.amorabito.coursinho.model.dtos.WeeklySessionDto;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface CourseEditionService {
 
-    Optional<CourseEdition> getCourseEditionById(long id);
+    CourseEditionDto getCourseEditionById(long id);
 
-    Collection<Module> getModuleByCourseEditionId(long id);
+    Collection<ModuleDto> getModuleByCourseEditionId(long id);
 
-    Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException;
+    Collection<CourseEditionDto> getByCourse(long id) throws EntityNotFoundException;
 
-    Collection<CourseEdition> getAllCoursesEditions();
+    Collection<CourseEditionDto> getAllCoursesEditions();
 
-    Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course);
+    CourseEditionDto getFirstByCourseOrderByStartDateDesc(CourseDto course);
 
-    CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException;
+    CourseEditionDto createCourseEdition(CourseEditionDto courseEdition) throws EntityNotFoundException;
 
-    Module createModule(Module module) throws EntityNotFoundException;
+    ModuleDto createModule(ModuleDto module) throws EntityNotFoundException;
 
-    WeeklySession createWeeklySession(WeeklySession weeklySession) throws EntityNotFoundException;
+    WeeklySessionDto createWeeklySession(WeeklySessionDto weeklySession) throws EntityNotFoundException;
 
     void deleteCourseEdition(long id);
 
+    Collection<CourseDto> getMostRecentEdition(Collection<CourseDto> filteredCourses);
 }

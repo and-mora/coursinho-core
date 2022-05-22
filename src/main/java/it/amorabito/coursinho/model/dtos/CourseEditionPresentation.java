@@ -7,7 +7,7 @@ public class CourseEditionPresentation {
 
     private long courseId;
     private long courseEditionId;
-    private String name;
-    private String category;
-    private double price;
+    private String courseName;
+    private String courseCategory;
+    private double coursePrice;
 }

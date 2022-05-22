@@ -1,53 +1,52 @@
 package it.amorabito.coursinho.controllers;
 
 import it.amorabito.coursinho.model.dtos.ClassroomDto;
-import it.amorabito.coursinho.model.entities.Classroom;
 import it.amorabito.coursinho.services.abstractions.ClassroomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/classroom")
 @CrossOrigin
 @RequiredArgsConstructor
+@Slf4j
 public class ClassroomController {
 
     private final ClassroomService classroomService;
 
     @GetMapping("/")
     public ResponseEntity<Collection<ClassroomDto>> getAllClassrooms() {
-        Collection<Classroom> data = this.classroomService.getAllClassrooms();
+        log.info("getAllClassrooms");
+        Collection<ClassroomDto> data = classroomService.getAllClassrooms();
 
-        return new ResponseEntity<>(data.stream().map(ClassroomDto::new).collect(Collectors.toList()), HttpStatus.OK);
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClassroomDto> getClassroomById(@PathVariable long id) {
-        Optional<Classroom> opt = this.classroomService.getClassroomById(id);
+        log.info("getClassroomById");
+        ClassroomDto classroom = classroomService.getClassroomById(id);
 
-        if (opt.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ClassroomDto(opt.get()), HttpStatus.OK);
+        return ResponseEntity.ok(classroom);
     }
 
     @GetMapping("/reals")
     public ResponseEntity<Collection<ClassroomDto>> getRealClassrooms() {
-        List<ClassroomDto> results = this.classroomService.getRealClassrooms().stream().map(ClassroomDto::new).collect(Collectors.toList());
-        return new ResponseEntity<>(results, HttpStatus.OK);
+        log.info("getRealClassrooms");
+        Collection<ClassroomDto> results = classroomService.getRealClassrooms();
+
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/virtuals")
     public ResponseEntity<Collection<ClassroomDto>> getVirtualClassrooms() {
-        List<ClassroomDto> results = this.classroomService.getVirtualClassrooms().stream().map(ClassroomDto::new).collect(Collectors.toList());
-        return new ResponseEntity<>(results, HttpStatus.OK);
+        log.info("getVirtualClassrooms");
+        Collection<ClassroomDto> results = classroomService.getVirtualClassrooms();
+
+        return ResponseEntity.ok(results);
     }
 }

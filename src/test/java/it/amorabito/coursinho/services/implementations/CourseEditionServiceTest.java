@@ -1,92 +1,81 @@
 package it.amorabito.coursinho.services.implementations;
 
+import it.amorabito.coursinho.model.dtos.CourseEditionDto;
 import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.model.entities.Module;
-import it.amorabito.coursinho.exceptions.EntityNotFoundException;
-import it.amorabito.coursinho.services.abstractions.CourseEditionService;
+import it.amorabito.coursinho.model.mapper.CourseEditionMapper;
 import it.amorabito.coursinho.repositories.CourseEditionRepository;
-import it.amorabito.coursinho.repositories.CourseRepository;
-import it.amorabito.coursinho.repositories.ModuleRepository;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-@SpringBootTest
-public class CourseEditionServiceTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
-    @Autowired
+@ExtendWith(MockitoExtension.class)
+class CourseEditionServiceTest {
+
+    long ID_DEFAULT = 10L;
+    Course course;
+    CourseEdition courseEdition;
+
+    @Spy
+    CourseEditionMapper courseEditionMapper = Mappers.getMapper(CourseEditionMapper.class);
+    @Mock
     private CourseEditionRepository courseEditionRepo;
-    @Autowired
-    private CourseRepository courseRepo;
-    @Autowired
-    private ModuleRepository moduleRepo;
+//    @Mock
+//    private CourseRepository courseRepo;
+//    @Mock
+//    private ModuleRepository moduleRepo;
 
-    @Autowired
-    private CourseEditionService courseEditionService;
+    @InjectMocks
+    private CourseEditionServiceImpl courseEditionService;
+
+    @BeforeEach
+    void init() {
+//        courseEditionService = new CourseEditionServiceImpl(courseEditionRepo, null, null,
+//                null, null,null,courseEditionMapper, null);
+        course = createCourse();
+        courseEdition = createEdition(course);
+    }
 
     @Test
-    public void getByCourse() throws EntityNotFoundException {
-        // create course
-        Course c = createCourse();
-        Course saved = this.courseRepo.save(c);
-        // create edition
-        CourseEdition ce = createEdition(saved);
-        ce.setDescription("1st ed");
-        this.courseEditionRepo.save(ce);
-        // create 2nd edition
-        CourseEdition ce2 = createEdition(c);
-        ce2.setDescription("2nd ed");
-        this.courseEditionRepo.save(ce2);
+    void whenCourseEditionIsNotFoundThrowsException() {
+        doReturn(Optional.empty()).when(courseEditionRepo).findById(any());
 
-        // run test
-        List<CourseEdition> results =  new ArrayList<>(this.courseEditionService.getByCourse(saved.getId()));
+        assertThatThrownBy(() -> courseEditionService.getCourseEditionById(ID_DEFAULT)).isInstanceOf(NoSuchElementException.class);
+    }
 
-        //check results
-        Assertions.assertEquals(2, results.size());
-        Assertions.assertTrue(results.stream().anyMatch(ed -> ed.getDescription().equals("1st ed")));
+    @Test
+    void whenCourseEditionIsFoundReturnsDto() {
+        doReturn(Optional.of(courseEdition)).when(courseEditionRepo).findById(any());
 
-        // delete editions
-        this.courseEditionRepo.delete(ce2);
-        this.courseEditionRepo.delete(ce);
-        // delete course
-        this.courseRepo.delete(saved);
+        var courseEdition = courseEditionService.getCourseEditionById(ID_DEFAULT);
+
+        assertThat(courseEdition)
+                .isInstanceOf(CourseEditionDto.class)
+                .extracting("id", "courseId")
+                .contains(ID_DEFAULT, course.getId());
+    }
+
+
+    /*@Test
+    public void getByCourse() {
     }
 
     @Test
     public void getModulesByIdTest() {
-        // create course
-        Course c = createCourse();
-        Course cSaved = this.courseRepo.save(c);
-        // create edition
-        CourseEdition ce = createEdition(cSaved);
-        ce.setDescription("1st ed");
-        CourseEdition ceSaved = this.courseEditionRepo.save(ce);
-        // create modules
-        Module m = new Module();
-        m.setEdition(ceSaved);
-        m.setDescription("descrTest");
-        m.setName("nameTest");
-        Module mSaved = this.moduleRepo.save(m);
-
-        // run test
-        List<Module> results = (List<Module>) this.courseEditionService.getModuleByCourseEditionId(ceSaved.getId());
-
-        // check
-        Assertions.assertTrue(results.size() > 0);
-        Assertions.assertTrue(results.stream().anyMatch(module -> module.getName().equals("nameTest")));
-
-        // delete modules
-        this.moduleRepo.delete(mSaved);
-        // delete edition
-        this.courseEditionRepo.delete(ceSaved);
-        // delete course
-        this.courseRepo.delete(cSaved);
-    }
+*/
 
     private Course createCourse() {
         Course c = new Course();
@@ -98,6 +87,7 @@ public class CourseEditionServiceTest {
 
     private CourseEdition createEdition(Course c) {
         CourseEdition ce = new CourseEdition();
+        ce.setId(ID_DEFAULT);
         ce.setCourse(c);
 
         return ce;

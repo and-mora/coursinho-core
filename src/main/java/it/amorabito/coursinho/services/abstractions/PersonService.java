@@ -1,27 +1,23 @@
 package it.amorabito.coursinho.services.abstractions;
 
-import it.amorabito.coursinho.model.entities.Employee;
-import it.amorabito.coursinho.model.entities.Person;
-import it.amorabito.coursinho.model.entities.Student;
-import it.amorabito.coursinho.model.entities.Teacher;
+import it.amorabito.coursinho.model.dtos.PersonDto;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface PersonService {
-    Collection<Person> getPersons();
+    Collection<PersonDto> getPersons();
 
-    Person savePerson(Person person);
+//    PersonDto savePerson(PersonDto person);
 
-    Optional<Person> getPersonById(long id);
+    PersonDto getPersonById(long id);
 
-    Collection<Teacher> getTeachers();
+    Collection<PersonDto> getTeachers();
 
-    Collection<Employee> getEmployees();
+    Collection<PersonDto> getEmployees();
 
-    Collection<Student> getStudents();
+    Collection<PersonDto> getStudents();
 
-    Collection<Student> getStudentsContaining(String firstName, String lastName, String fiscalCode);
+    Collection<PersonDto> getStudentsContaining(String firstName, String lastName, String fiscalCode);
 
     void deletePerson(long id);
 }
