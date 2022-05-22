@@ -1,16 +1,18 @@
 package it.amorabito.coursinho.services.implementations;
 
 import it.amorabito.coursinho.model.dtos.CategoryData;
-import it.amorabito.coursinho.model.entities.Course;
-import it.amorabito.coursinho.repositories.CourseEditionRepository;
+import it.amorabito.coursinho.model.dtos.CourseDto;
+import it.amorabito.coursinho.model.dtos.CourseEditionPresentation;
+import it.amorabito.coursinho.model.dtos.CourseFilter;
+import it.amorabito.coursinho.model.mapper.CourseMapper;
 import it.amorabito.coursinho.repositories.CourseRepository;
+import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import it.amorabito.coursinho.services.abstractions.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,7 +20,8 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepo;
-    private final CourseEditionRepository courseEditionRepo;
+    private final CourseEditionService courseEditionService;
+    private final CourseMapper courseMapper;
 
     /**
      * Get a collection of courses
@@ -26,8 +29,8 @@ public class CourseServiceImpl implements CourseService {
      * @return
      */
     @Override
-    public Collection<Course> getCourses() {
-        return this.courseRepo.findAll();
+    public Collection<CourseDto> getCourses() {
+        return courseMapper.toDtoList(courseRepo.findAll());
     }
 
     /**
@@ -37,7 +40,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Collection<CategoryData> getCategoriesCount() {
-        return this.courseRepo.findByCategoriesCount();
+        return courseRepo.findByCategoriesCount();
     }
 
     /**
@@ -47,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Double getCourseMaxPrice() {
-        return this.courseRepo.findByMaxPrice();
+        return courseRepo.findByMaxPrice();
     }
 
     /**
@@ -57,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Double getCourseMinPrice() {
-        return this.courseRepo.findByMinPrice();
+        return courseRepo.findByMinPrice();
     }
 
     /**
@@ -67,8 +70,8 @@ public class CourseServiceImpl implements CourseService {
      * @return
      */
     @Override
-    public Optional<Course> getCourseById(long id) {
-        return this.courseRepo.findById(id);
+    public CourseDto getCourseById(long id) {
+        return courseMapper.toDto(courseRepo.findById(id).orElseThrow());
     }
 
 //    @Override
@@ -79,23 +82,13 @@ public class CourseServiceImpl implements CourseService {
 //    }
 
     @Override
-    public Collection<Course> getCoursesByCategoryLike(String categoryLike) {
-        return this.courseRepo.findByCategoryLike(categoryLike);
-    }
-
-//    @Override
-//    public Collection<Course> getCoursesBetweenPrices(double minPrice, double maxPrice) {
-//        return this.courseRepo.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
-//    }
-
-    @Override
-    public Collection<Course> getCoursesWithEditions() {
-        return this.courseRepo.findByCoursesWithEditions();
+    public Collection<CourseDto> getCoursesByCategoryLike(String categoryLike) {
+        return courseMapper.toDtoList(courseRepo.findByCategoryLike(categoryLike));
     }
 
     @Override
-    public Collection<Course> getCoursesWithEditionsByPrice(double minPrice, double maxPrice) {
-        return this.courseRepo.findByCoursesWithEditionsByPrices(minPrice, maxPrice);
+    public Collection<CourseDto> getCoursesWithEditions() {
+        return courseMapper.toDtoList(courseRepo.findByCoursesWithEditions());
     }
 
     /**
@@ -105,19 +98,49 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public void deleteCourse(long id) {
-        this.courseRepo.deleteById(id);
+        courseRepo.deleteById(id);
     }
 
     /**
-     * Crea a new course
+     * Create a new course
      *
      * @param course
      * @return
      */
     @Override
-    public Course saveCourse(Course course) {
-        return this.courseRepo.save(course);
+    public CourseDto saveCourse(CourseDto course) {
+        var saved = courseRepo.save(courseMapper.toEntity(course));
+        return courseMapper.toDto(saved);
     }
 
-// crud per course edition
+    @Override
+    public CourseDto updateCourse(CourseDto courseDto) {
+        courseRepo.findById(courseDto.getId()).orElseThrow();
+
+        var updatedCourse = courseRepo.save(courseMapper.toEntity(courseDto));
+
+        return courseMapper.toDto(updatedCourse);
+    }
+
+    @Override
+    public Collection<CourseEditionPresentation> getFilteredCoursesWithMostRecentEdition(CourseFilter filter) {
+
+        // recupero corsi filtrati
+        var filteredCourses = getFilteredCourses(filter);
+
+        // recupero soltanto l'edizione più recente di ogni corso
+        var coursesWithMostRecentEdition = courseEditionService.getMostRecentEdition(filteredCourses);
+
+        // converto i dati
+
+
+        return null;
+    }
+
+    private Collection<CourseDto> getFilteredCourses(CourseFilter filter) {
+        courseRepo.findFiltered(filter);
+        // todo
+        return null;
+    }
+
 }

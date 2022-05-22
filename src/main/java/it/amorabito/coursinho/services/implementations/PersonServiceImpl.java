@@ -1,9 +1,7 @@
 package it.amorabito.coursinho.services.implementations;
 
-import it.amorabito.coursinho.model.entities.Employee;
-import it.amorabito.coursinho.model.entities.Person;
-import it.amorabito.coursinho.model.entities.Student;
-import it.amorabito.coursinho.model.entities.Teacher;
+import it.amorabito.coursinho.model.dtos.PersonDto;
+import it.amorabito.coursinho.model.mapper.PersonMapper;
 import it.amorabito.coursinho.repositories.EmployeeRepository;
 import it.amorabito.coursinho.repositories.PersonRepository;
 import it.amorabito.coursinho.repositories.StudentRepository;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,45 +22,46 @@ public class PersonServiceImpl implements PersonService {
     private final TeacherRepository teacherRepo;
     private final EmployeeRepository employeeRepo;
     private final StudentRepository studentRepo;
+    private final PersonMapper personMapper;
 
     @Override
-    public Collection<Person> getPersons() {
-        return personRepo.findAll();
+    public Collection<PersonDto> getPersons() {
+        return personMapper.toDtoList(personRepo.findAll());
+    }
+
+//    @Override
+//    public PersonDto savePerson(PersonDto person) {
+//        return personMapper.toDto(personRepo.save(personMapper.toEntity(person)));
+//    }
+
+    @Override
+    public PersonDto getPersonById(long id) {
+        return personMapper.toDto(personRepo.findById(id).orElseThrow());
     }
 
     @Override
-    public Person savePerson(Person person) {
-        return personRepo.save(person);
+    public Collection<PersonDto> getTeachers() {
+        return personMapper.fromTeacherToDtoList(teacherRepo.findAll());
     }
 
     @Override
-    public Optional<Person> getPersonById(long id) {
-        return this.personRepo.findById(id);
+    public Collection<PersonDto> getEmployees() {
+        return personMapper.fromEmployeeToDtoList(employeeRepo.findAll());
     }
 
     @Override
-    public Collection<Teacher> getTeachers() {
-        return this.teacherRepo.findAll();
+    public Collection<PersonDto> getStudents() {
+        return personMapper.fromStudentToDtoList(studentRepo.findAll());
     }
 
     @Override
-    public Collection<Employee> getEmployees() {
-        return this.employeeRepo.findAll();
-    }
-
-    @Override
-    public Collection<Student> getStudents() {
-        return this.studentRepo.findAll();
-    }
-
-    @Override
-    public Collection<Student> getStudentsContaining(String firstName, String lastName, String fiscalCode) {
-        return this.studentRepo.findTop10ByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCaseOrFiscalCodeContainsIgnoreCase(firstName, lastName, fiscalCode);
+    public Collection<PersonDto> getStudentsContaining(String firstName, String lastName, String fiscalCode) {
+        return personMapper.fromStudentToDtoList(studentRepo.findTop10ByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCaseOrFiscalCodeContainsIgnoreCase(firstName, lastName, fiscalCode));
     }
 
     @Override
     public void deletePerson(long id) {
-        this.personRepo.deleteById(id);
+        personRepo.deleteById(id);
     }
 
 

@@ -1,12 +1,18 @@
 package it.amorabito.coursinho.services.implementations;
 
+import it.amorabito.coursinho.exceptions.EntityNotFoundException;
+import it.amorabito.coursinho.model.dtos.CourseDto;
+import it.amorabito.coursinho.model.dtos.CourseEditionDto;
+import it.amorabito.coursinho.model.dtos.ModuleDto;
+import it.amorabito.coursinho.model.dtos.WeeklySessionDto;
 import it.amorabito.coursinho.model.entities.Classroom;
 import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.model.entities.Module;
-import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.model.entities.Person;
-import it.amorabito.coursinho.model.entities.WeeklySession;
+import it.amorabito.coursinho.model.mapper.CourseEditionMapper;
+import it.amorabito.coursinho.model.mapper.CourseMapper;
+import it.amorabito.coursinho.model.mapper.ModuleMapper;
+import it.amorabito.coursinho.model.mapper.WeeklySessionMapper;
 import it.amorabito.coursinho.repositories.*;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -27,96 +35,112 @@ public class CourseEditionServiceImpl implements CourseEditionService {
     private final ModuleRepository moduleRepo;
     private final ClassroomRepository classroomRepo;
     private final WeeklySessionRepository weeklySessionRepo;
+    private final CourseEditionMapper courseEditionMapper;
+    private final ModuleMapper moduleMapper;
+    private final WeeklySessionMapper weeklySessionMapper;
+    private final CourseMapper courseMapper;
+
 
     @Override
-    public Optional<CourseEdition> getCourseEditionById(long id) {
-        return this.courseEditionRepo.findById(id);
+    public CourseEditionDto getCourseEditionById(long editionId) {
+        var courseEdition = courseEditionRepo.findById(editionId).orElseThrow();
+
+        return courseEditionMapper.toDto(courseEdition);
     }
 
     @Override
-    public Collection<Module> getModuleByCourseEditionId(long editionId) {
-        return this.moduleRepo.getByCouseEditionId(editionId);
+    public Collection<ModuleDto> getModuleByCourseEditionId(long editionId) {
+        return moduleMapper.toDtoList(moduleRepo.getByCouseEditionId(editionId));
     }
 
     @Override
-    public Collection<CourseEdition> getByCourse(long id) throws EntityNotFoundException {
-        Optional<Course> opt = this.courseRepo.findById(id);
+    public Collection<CourseEditionDto> getByCourse(long id) {
+        var course = courseRepo.findById(id).orElseThrow();
 
-        if (opt.isEmpty()) {
-            throw new EntityNotFoundException("course con id " + id + " non trovato");
+        return courseEditionMapper.toDtoList(courseEditionRepo.findByCourse(course));
+    }
+
+    @Override
+    public Collection<CourseEditionDto> getAllCoursesEditions() {
+        return courseEditionMapper.toDtoList(courseEditionRepo.findAll());
+    }
+
+    @Override
+    public CourseEditionDto getFirstByCourseOrderByStartDateDesc(CourseDto courseDto) {
+        var courseEdition = courseEditionRepo.findFirstByCourseOrderByStartDateDesc(courseMapper.toEntity(courseDto));
+        if (courseEdition.isEmpty()) {
+            return null;
         }
-
-        return this.courseEditionRepo.findByCourse(opt.get());
-    }
-
-    @Override
-    public Collection<CourseEdition> getAllCoursesEditions() {
-        return this.courseEditionRepo.findAll();
-    }
-
-    @Override
-    public Optional<CourseEdition> getFirstByCourseOrderByStartDateDesc(Course course) {
-        return this.courseEditionRepo.findFirstByCourseOrderByStartDateDesc(course);
+        return courseEditionMapper.toDto(courseEdition.get());
     }
 
     /**
      * Create a new edition course
      */
     @Override
-    public CourseEdition createCourseEdition(CourseEdition courseEdition) throws EntityNotFoundException {
-        Optional<Person> tutor = personRepo.findById(courseEdition.getTutor().getId());
+    public CourseEditionDto createCourseEdition(CourseEditionDto courseEdition) throws EntityNotFoundException {
+        Optional<Person> tutor = personRepo.findById(courseEdition.getTutorId());
         if (tutor.isEmpty()) {
-            throw new EntityNotFoundException("tutore con id " + courseEdition.getTutor().getId() + " non trovato");
+            throw new EntityNotFoundException("tutore con id " + courseEdition.getTutorId() + " non trovato");
         }
-        courseEdition.setTutor(tutor.get());
 
-        Optional<Classroom> classroom = classroomRepo.findById(courseEdition.getClassroom().getId());
+        Optional<Classroom> classroom = classroomRepo.findById(courseEdition.getClassroomId());
         if (classroom.isEmpty()) {
-            throw new EntityNotFoundException("classroom con id " + courseEdition.getClassroom().getId() + " non trovata");
+            throw new EntityNotFoundException("classroom con id " + courseEdition.getClassroomId() + " non trovata");
         }
-        courseEdition.setClassroom(classroom.get());
 
-        Optional<Course> course = courseRepo.findById(courseEdition.getCourse().getId());
+        Optional<Course> course = courseRepo.findById(courseEdition.getCourseId());
         if (course.isEmpty()) {
-            throw new EntityNotFoundException("course con id " + courseEdition.getCourse().getId() + " non trovato");
+            throw new EntityNotFoundException("course con id " + courseEdition.getCourseId() + " non trovato");
         }
-        courseEdition.setCourse(course.get());
 
-        return this.courseEditionRepo.save(courseEdition);
+        var courseEditionSaved = courseEditionRepo.save(courseEditionMapper.toEntity(courseEdition));
+
+        return courseEditionMapper.toDto(courseEditionSaved);
     }
 
     @Override
-    public Module createModule(Module module) throws EntityNotFoundException {
-        Optional<Person> teacher = personRepo.findById(module.getTeacher().getId());
+    public ModuleDto createModule(ModuleDto moduleDto) throws EntityNotFoundException {
+        Optional<Person> teacher = personRepo.findById(moduleDto.getTeacherId());
         if (teacher.isEmpty()) {
-            throw new EntityNotFoundException("persona con id " + module.getTeacher().getId() + " non trovata");
+            throw new EntityNotFoundException("persona con id " + moduleDto.getTeacherId() + " non trovata");
         }
 
-        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(module.getEdition().getId());
+        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(moduleDto.getEditionId());
         if (courseEdition.isEmpty()) {
-            throw new EntityNotFoundException("edizione con id " + module.getEdition().getId() + " non trovata");
+            throw new EntityNotFoundException("edizione con id " + moduleDto.getEditionId() + " non trovata");
         }
 
-        module.setTeacher(teacher.get());
-        module.setEdition(courseEdition.get());
+        var moduleSaved = moduleRepo.save(moduleMapper.toEntity(moduleDto));
 
-        return this.moduleRepo.save(module);
+        return moduleMapper.toDto(moduleSaved);
     }
 
     @Override
-    public WeeklySession createWeeklySession(WeeklySession weeklySession) throws EntityNotFoundException {
-        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(weeklySession.getEdition().getId());
+    public WeeklySessionDto createWeeklySession(WeeklySessionDto weeklySessionDto) throws EntityNotFoundException {
+        Optional<CourseEdition> courseEdition = courseEditionRepo.findById(weeklySessionDto.getEditionId());
         if (courseEdition.isEmpty()) {
-            throw new EntityNotFoundException("edizione con id " + weeklySession.getEdition().getId() + " non trovata");
+            throw new EntityNotFoundException("edizione con id " + weeklySessionDto.getEditionId() + " non trovata");
         }
 
-        weeklySession.setEdition(courseEdition.get());
+        var saved = weeklySessionRepo.save(weeklySessionMapper.toEntity(weeklySessionDto));
 
-        return this.weeklySessionRepo.save(weeklySession);
+        return weeklySessionMapper.toDto(saved);
     }
 
     @Override
     public void deleteCourseEdition(long id) {
-        this.courseEditionRepo.deleteById(id);
+        courseEditionRepo.deleteById(id);
+    }
+
+    @Override
+    public Collection<CourseDto> getMostRecentEdition(Collection<CourseDto> filteredCourses) {
+        for (var course : filteredCourses) {
+            course.getEditions().stream().max(Comparator.comparing(CourseEditionDto::getStartDate))
+                    .ifPresentOrElse(courseFiltered -> course.setEditions(Collections.singletonList(courseFiltered)),
+                            () -> course.setEditions(Collections.emptyList()));
+        }
+
+        return filteredCourses;
     }
 }

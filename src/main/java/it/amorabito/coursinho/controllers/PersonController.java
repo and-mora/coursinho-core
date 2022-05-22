@@ -1,23 +1,19 @@
 package it.amorabito.coursinho.controllers;
 
 import it.amorabito.coursinho.model.dtos.PersonDto;
-import it.amorabito.coursinho.model.entities.Person;
-import it.amorabito.coursinho.model.entities.Student;
 import it.amorabito.coursinho.services.abstractions.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/person")
 @CrossOrigin
 @RequiredArgsConstructor
+@Slf4j
 public class PersonController {
 
     private final PersonService personService;
@@ -29,24 +25,28 @@ public class PersonController {
      */
     @GetMapping("/")
     public ResponseEntity<Collection<PersonDto>> getAllPerson() {
-        Collection<Person> listPerson = personService.getPersons();
-        List<PersonDto> result = listPerson.stream().map(PersonDto::new).collect(Collectors.toList());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        log.info("getAllPerson");
+        var persons = personService.getPersons();
+
+        return ResponseEntity.ok(persons);
     }
 
     @GetMapping("/type/{value}")
     public ResponseEntity<Collection<PersonDto>> getPersonsByType(@PathVariable String value) {
+        log.info("getPersonsByType");
 
         switch (value) {
             case "teachers":
-                return new ResponseEntity<>(personService.getTeachers().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+                return ResponseEntity.ok(personService.getTeachers());
             case "students":
-                return new ResponseEntity<>(personService.getStudents().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+                return ResponseEntity.ok(personService.getStudents());
             case "employees":
-                return new ResponseEntity<>(personService.getEmployees().stream().map(PersonDto::new).collect(Collectors.toList()), HttpStatus.OK);
+                return ResponseEntity.ok(personService.getEmployees());
+            default:
+                break;
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -56,42 +56,38 @@ public class PersonController {
      * @return
      */
     @GetMapping("/students/search")
-    public ResponseEntity<Collection<PersonDto>> getStudentsContaining(@RequestParam Optional<String> contains) {
+    public ResponseEntity<Collection<PersonDto>> getStudentsContaining(@RequestParam String contains) {
+        log.info("getStudentsContaining");
 
-        Collection<Student> students;
-
-        if (contains.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (contains == null) {
+            return ResponseEntity.badRequest().build();
         }
 
-        String stringLike = contains.get();
-        students = this.personService.getStudentsContaining(stringLike, stringLike, stringLike);
+        var students = personService.getStudentsContaining(contains, contains, contains);
 
-        Collection<PersonDto> results = students.stream().map(PersonDto::new).collect(Collectors.toList());
-
-        return new ResponseEntity<>(results, HttpStatus.OK);
+        return ResponseEntity.ok(students);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonDto> findPersonById(@PathVariable long id) {
-        Optional<Person> opt = personService.getPersonById(id);
-        if (opt.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new PersonDto(opt.get()), HttpStatus.OK);
+        log.info("findPersonById");
+        PersonDto person = personService.getPersonById(id);
+
+        return ResponseEntity.ok(person);
     }
 
-    /**
-     * Create a new person
-     *
-     * @return
-     */
-    @PostMapping("/")
-    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
-
-        Person person = personDto.toPerson();
-        Person saved = personService.savePerson(person);
-        PersonDto saveDto = new PersonDto((saved));
-        return new ResponseEntity<>(saveDto, HttpStatus.OK);
-    }
+//    /**
+//     * Create a new person
+//     *
+//     * @return
+//     */
+//    @PostMapping("/")
+//    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
+//        log.info("createPerson");
+//        var saved = personService.savePerson(personDto);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+//    }
 
     /**
      * Delete person
@@ -101,10 +97,9 @@ public class PersonController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<PersonDto> deletePerson(@PathVariable long id) {
-        Optional<Person> opt = personService.getPersonById(id);
-        if (opt.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        personService.getPersonById(id);
         personService.deletePerson(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }

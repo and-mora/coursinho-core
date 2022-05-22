@@ -2,8 +2,6 @@ package it.amorabito.coursinho.controllers;
 
 import it.amorabito.coursinho.exceptions.EntityNotFoundException;
 import it.amorabito.coursinho.model.dtos.ApplicationDto;
-import it.amorabito.coursinho.model.entities.Application;
-import it.amorabito.coursinho.model.mapper.ApplicationMapper;
 import it.amorabito.coursinho.services.abstractions.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,44 +17,41 @@ import java.util.Collection;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
-    private final ApplicationMapper applicationMapper;
 
     @GetMapping("/{select}/{id}")
     public ResponseEntity<Collection<ApplicationDto>> getBySelect(@PathVariable String select, @PathVariable long id) {
-        Collection<Application> apps;
+        Collection<ApplicationDto> applications;
 
         try {
             switch (select) {
                 case "student":
-                    apps = this.applicationService.getByStudent(id);
+                    applications = applicationService.getByStudent(id);
                     break;
                 case "edition":
-                    apps = this.applicationService.getByEdition(id);
+                    applications = applicationService.getByEdition(id);
                     break;
                 default:
                     return ResponseEntity.badRequest().build();
 
             }
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
 
-        Collection<ApplicationDto> results = applicationMapper.toDtoList(apps);
-
-        return new ResponseEntity<>(results, HttpStatus.OK);
+        return ResponseEntity.ok(applications);
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApplicationDto> saveApplication(@RequestBody ApplicationDto dto) {
-        Application appl = applicationMapper.toEntity(dto);
+    public ResponseEntity<ApplicationDto> saveApplication(@RequestBody ApplicationDto applicationDto) {
+        ApplicationDto applicationSaved;
 
         try {
-            this.applicationService.save(appl);
+            applicationSaved = applicationService.save(applicationDto);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
 
-        return new ResponseEntity<>(applicationMapper.toDto(appl), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(applicationSaved);
     }
 
 }
