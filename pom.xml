@@ -15,8 +15,12 @@
     <description>Courses application with Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
+        <maven.compiler.testTarget>${maven.compiler.testSource}</maven.compiler.testTarget>
+        <version.hibernate-jpamodelgen>6.0.0.Alpha2</version.hibernate-jpamodelgen>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <version.hibernate-jpamodelgen>6.0.1.Final</version.hibernate-jpamodelgen>
     </properties>
     <dependencies>
         <dependency>
@@ -59,6 +63,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${version.hibernate-jpamodelgen}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -66,7 +75,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!--				<version>${compiler-plugin.version}</version>-->
+                <version>3.10.1</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
@@ -90,8 +99,7 @@
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
-                <version>2.0.5</version>
-                <extensions>false</extensions>
+                <version>4.5</version>
                 <executions>
                     <execution>
                         <id>process</id>
@@ -100,8 +108,6 @@
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <!-- source output directory -->
-                            <outputDirectory>target/metamodel</outputDirectory>
                             <processors>
                                 <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                             </processors>
@@ -110,7 +116,7 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>org.hibernate</groupId>
+                        <groupId>org.hibernate.orm</groupId>
                         <artifactId>hibernate-jpamodelgen</artifactId>
                         <version>${version.hibernate-jpamodelgen}</version>
                     </dependency>
