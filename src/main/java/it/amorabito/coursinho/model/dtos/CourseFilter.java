@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CourseFilter {
 
-    Integer minimumPrice;
-    Integer maximumPrice;
+    Double minimumPrice;
+    Double maximumPrice;
 }
