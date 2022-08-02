@@ -74,13 +74,6 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.toDto(courseRepo.findById(id).orElseThrow());
     }
 
-//    @Override
-//    public Page<Collection<Course>> getCoursesByCategoryLikePaged(String categoryLike, Paginator pg) {
-//        return this.courseRepo.findByCategoryLikePaged(categoryLike, PageRequest.of(
-//                pg.getNumPage(), pg.getElementsPerPage(),
-//                Sort.by(Sort.Direction.DESC, pg.getOrderBy())));
-//    }
-
     @Override
     public Collection<CourseDto> getCoursesByCategoryLike(String categoryLike) {
         return courseMapper.toDtoList(courseRepo.findByCategoryLike(categoryLike));
@@ -132,15 +125,11 @@ public class CourseServiceImpl implements CourseService {
         var coursesWithMostRecentEdition = courseEditionService.getMostRecentEdition(filteredCourses);
 
         // converto i dati
-
-
-        return null;
+        return courseMapper.toCourseEditionPresentation(coursesWithMostRecentEdition);
     }
 
     private Collection<CourseDto> getFilteredCourses(CourseFilter filter) {
-        courseRepo.findFiltered(filter);
-        // todo
-        return null;
+        return courseMapper.toDtoList(courseRepo.findFiltered(filter));
     }
 
 }
