@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ${DB_CONNECTION_URL:jdbc:hsqldb:mem:${DB_NAME:batchdb};sql.enforce_strict_size=true;hsqldb.tx=mvcc}
+    url: ${DB_CONNECTION_URL:jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
     username: ${DB_USERNAME:sa}
     password: ${DB_PASSWORD:}
   jpa:
     hibernate.ddl-auto: none
-    database-platform: ${DB_DIALECT:org.hibernate.dialect.HSQLDialect}
+    database-platform: ${DB_DIALECT:org.h2.Driver}
     show-sql: true
