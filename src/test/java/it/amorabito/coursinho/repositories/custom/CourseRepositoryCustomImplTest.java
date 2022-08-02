@@ -18,10 +18,13 @@ class CourseRepositoryCustomImplTest {
     @Autowired
     private CourseRepository courseRepository;
 
+    private final Course firstCourse = createCourse(1, "firstCourse", 100.0);
+    private final Course secondCourse = createCourse(2, "secondCourse", 50.0);
+
     @BeforeEach
     void setup() {
-        courseRepository.save(createCourse(1, "firstCourse", 100.0));
-        courseRepository.save(createCourse(2, "secondCourse", 50.0));
+        courseRepository.save(firstCourse);
+        courseRepository.save(secondCourse);
     }
 
     @Test
