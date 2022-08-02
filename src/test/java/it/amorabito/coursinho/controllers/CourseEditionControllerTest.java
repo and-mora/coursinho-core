@@ -15,28 +15,28 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ContextConfiguration(classes = {CourseEditionController.class, CourseEditionService.class})
-@WebMvcTest
-@Slf4j
-class CourseEditionControllerTest {
+//@ContextConfiguration(classes = {CourseEditionController.class, CourseEditionService.class})
+//@WebMvcTest
+//@Slf4j
+//class CourseEditionControllerTest {
 
-    long ID_DEFAULT = 10L;
-
-    @MockBean
-    CourseEditionService courseEditionService;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Test
-    void whenCourseEditionIsFoundReturn200() throws Exception {
-        doReturn(new CourseEditionDto()).when(courseEditionService).getCourseEditionById(ID_DEFAULT);
-
-        MvcResult result = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/course-edition/{id}", ID_DEFAULT))
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+//    long ID_DEFAULT = 10L;
+//
+//    @MockBean
+//    CourseEditionService courseEditionService;
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Test
+//    void whenCourseEditionIsFoundReturn200() throws Exception {
+//        doReturn(new CourseEditionDto()).when(courseEditionService).getCourseEditionById(ID_DEFAULT);
+//
+//        MvcResult result = mockMvc.perform(
+//                        MockMvcRequestBuilders.get("/api/course-edition/{id}", ID_DEFAULT))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//    }
 
 //    @Test
 //    void whenCourseEditionIsNotFoundReturn404() throws Exception {
@@ -47,4 +47,4 @@ class CourseEditionControllerTest {
 //                .andExpect(status().isNotFound())
 //                .andReturn();
 //    }
-}
+//}

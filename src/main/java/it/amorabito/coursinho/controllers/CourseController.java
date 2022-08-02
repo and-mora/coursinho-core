@@ -3,111 +3,65 @@ package it.amorabito.coursinho.controllers;
 import it.amorabito.coursinho.model.dtos.CourseDto;
 import it.amorabito.coursinho.model.dtos.CourseEditionPresentation;
 import it.amorabito.coursinho.model.dtos.CourseFilter;
-import it.amorabito.coursinho.model.mapper.CourseMapper;
-import it.amorabito.coursinho.services.abstractions.CourseEditionService;
-import it.amorabito.coursinho.services.abstractions.CourseService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@RestController
 @RequestMapping("/api/course")
-@CrossOrigin
-@RequiredArgsConstructor
-@Slf4j
-public class CourseController {
-
-    private final CourseService courseService;
-    private final CourseEditionService courseEditionService;
-    private final CourseMapper courseMapper;
+public interface CourseController {
 
     /**
-     * Get a collection of courses
+     * Rest api to retrieve all the course.
      *
-     * @return
+     * @return a collection of courses
      */
     @GetMapping("/")
-    public ResponseEntity<Collection<CourseDto>> getAllCourses() {
-        log.info("allCourses");
-        Collection<CourseDto> courses = courseService.getCourses();
-
-        return ResponseEntity.ok(courses);
-    }
+    ResponseEntity<Collection<CourseDto>> getAllCourses();
 
     /**
-     * Get courses with edition and filter on price if priceRange is present
+     * Retrieve filtered courses.
      *
-     * @param filter
-     * @return
+     * @param filter filter to apply
+     * @return a collection of courses
      */
     @PostMapping("/search")
-    public ResponseEntity<Collection<CourseEditionPresentation>> getFilteredCoursesWithMostRecentEdition(
-            @RequestBody CourseFilter filter) {
-        log.info("getFilteredCoursesWithMostRecentEdition");
-        var results = courseService.getFilteredCoursesWithMostRecentEdition(filter);
-
-        return ResponseEntity.ok(results);
-    }
+    ResponseEntity<Collection<CourseEditionPresentation>> getFilteredCoursesWithMostRecentEdition(
+            @RequestBody CourseFilter filter);
 
     /**
-     * Get only one course
+     * Retrieve the course identified by id.
      *
-     * @param id
-     * @return
+     * @param id unique identifier of a course
+     * @return a course
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
-        log.info("findCourseById");
-        var course = courseService.getCourseById(id);
-
-        return ResponseEntity.ok(course);
-    }
+    ResponseEntity<CourseDto> findCourseById(@PathVariable long id);
 
     /**
-     * Delete a course
+     * Delete a course identified by id.
      *
-     * @param id
-     * @return
+     * @param id unique identifier of a course
+     * @return the course deleted
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDto> deleteCourseById(@PathVariable long id) {
-        log.info("deleteCourseById");
-
-        var course = courseService.getCourseById(id);
-
-        courseService.deleteCourse(id);
-        return ResponseEntity.ok(course);
-    }
+    ResponseEntity<CourseDto> deleteCourseById(@PathVariable long id);
 
     /**
-     * Create a new course
+     * Create a new course.
      *
-     * @param courseDto
-     * @return
+     * @param courseDto new course
+     * @return the course created
      */
     @PostMapping("/")
-    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto) {
-        log.info("createCourse");
-        var saved = courseService.saveCourse(courseDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
+    ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto);
 
     /**
-     * Update course
+     * Update a course.
      *
-     * @param courseDto
-     * @return dto course update
+     * @param courseDto course to update
+     * @return the course updated
      */
     @PutMapping("/")
-    public ResponseEntity<CourseDto> updateCourse(@RequestBody CourseDto courseDto) {
-        log.info("updateCourse");
-        var saved = courseService.updateCourse(courseDto);
-
-        return ResponseEntity.ok(saved);
-    }
+    ResponseEntity<CourseDto> updateCourse(@RequestBody CourseDto courseDto);
 }
