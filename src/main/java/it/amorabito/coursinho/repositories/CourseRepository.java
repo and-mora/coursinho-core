@@ -3,15 +3,15 @@ package it.amorabito.coursinho.repositories;
 import it.amorabito.coursinho.model.dtos.CategoryData;
 import it.amorabito.coursinho.model.entities.Course;
 import it.amorabito.coursinho.model.entities.CourseEdition;
-import it.amorabito.coursinho.repositories.custom.CourseRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface CourseRepository extends JpaRepository<Course, Long>, CourseRepositoryCustom {
+public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecificationExecutor<Course> {
 
     @Query("select new it.amorabito.coursinho.model.dtos.CategoryData(c.category, count(*)) " +
             "from Course as c " +

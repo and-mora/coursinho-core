@@ -6,6 +6,7 @@ import it.amorabito.coursinho.model.dtos.CourseEditionPresentation;
 import it.amorabito.coursinho.model.dtos.CourseFilter;
 import it.amorabito.coursinho.model.mapper.CourseMapper;
 import it.amorabito.coursinho.repositories.CourseRepository;
+import it.amorabito.coursinho.repositories.specifications.CourseSpecification;
 import it.amorabito.coursinho.services.abstractions.CourseEditionService;
 import it.amorabito.coursinho.services.abstractions.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -117,19 +118,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Collection<CourseEditionPresentation> getFilteredCoursesWithMostRecentEdition(CourseFilter filter) {
-
-        // recupero corsi filtrati
-        var filteredCourses = getFilteredCourses(filter);
-
-        // recupero soltanto l'edizione più recente di ogni corso
+        var filteredCourses = getFiltered(filter);
         var coursesWithMostRecentEdition = courseEditionService.getMostRecentEdition(filteredCourses);
-
-        // converto i dati
         return courseMapper.toCourseEditionPresentation(coursesWithMostRecentEdition);
     }
 
-    private Collection<CourseDto> getFilteredCourses(CourseFilter filter) {
-        return courseMapper.toDtoList(courseRepo.findFiltered(filter));
+    @Override
+    public Collection<CourseDto> getFiltered(CourseFilter courseFilter) {
+        return courseFilter == null ? courseMapper.toDtoList(courseRepo.findAll()) :
+                courseMapper.toDtoList(courseRepo.findAll(CourseSpecification.getCourseFilterConditions(courseFilter)));
     }
 
 }

@@ -29,6 +29,9 @@ public interface CourseController {
     ResponseEntity<Collection<CourseEditionPresentation>> getFilteredCoursesWithMostRecentEdition(
             @RequestBody CourseFilter filter);
 
+    @GetMapping("")
+    Collection<CourseDto> getFiltered(@RequestBody CourseFilter courseFilter);
+
     /**
      * Retrieve the course identified by id.
      *
