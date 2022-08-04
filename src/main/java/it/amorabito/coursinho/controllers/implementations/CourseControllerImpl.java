@@ -43,6 +43,12 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    public Collection<CourseDto> getFiltered(CourseFilter courseFilter) {
+        log.info("getFilteredCourses");
+        return courseService.getFiltered(courseFilter);
+    }
+
+    @Override
     public ResponseEntity<CourseDto> findCourseById(@PathVariable long id) {
         log.info("findCourseById");
         var course = courseService.getCourseById(id);

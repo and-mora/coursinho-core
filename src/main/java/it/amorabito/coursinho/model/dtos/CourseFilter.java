@@ -7,4 +7,5 @@ public class CourseFilter {
 
     Double minimumPrice;
     Double maximumPrice;
+    String category;
 }

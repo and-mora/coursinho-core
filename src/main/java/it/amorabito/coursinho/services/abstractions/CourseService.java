@@ -30,4 +30,6 @@ public interface CourseService {
     CourseDto updateCourse(CourseDto courseDto);
 
     Collection<CourseEditionPresentation> getFilteredCoursesWithMostRecentEdition(CourseFilter filter);
+
+    Collection<CourseDto> getFiltered(CourseFilter courseFilter);
 }
